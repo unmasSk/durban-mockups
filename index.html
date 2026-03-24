@@ -1,2568 +1,390 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dra. Isabel Durbán — Cirugía Plástica de Autor · Sevilla</title>
-  <meta name="description" content="Cirugía plástica y medicina estética de precisión en Sevilla. Dra. Isabel Durbán, más de 20 años de experiencia.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
-
+  <title>Intro Pluma v4 — Spinner</title>
   <style>
-    /* ============================================================
-       DESIGN TOKENS
-    ============================================================ */
-    :root {
-      --pearl: #fdfcfb;
-      --silk: #f4f1ee;
-      --text-primary: #2c2927;
-      --text-secondary: #5a504a;
-      --bronze-accent: #7a6a58;
-      --bronze-text: #6b5b4a;
-      --cta-bg: #6b5b4a;
-      --cta-hover: #5a4d3e;
-      --warm-rose: #b08a72;
-      --white: #fefefe;
-      --dark-bg: #1a1714;
-      --nav-h: 72px;
-      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-      --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    /* ============================================================
-       RESET + BASE
-    ============================================================ */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: auto; font-size: 16px; }
+    html,
     body {
-      font-family: 'Raleway', sans-serif;
-      font-weight: 300;
-      color: var(--text-primary);
-      background: var(--dark-bg);
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #1a1714;
     }
 
-    /* ============================================================
-       GRAIN OVERLAY
-    ============================================================ */
-    body::after {
-      content: '';
+    #bg {
       position: fixed;
       inset: 0;
-      z-index: 9998;
+      background: url(background-1.png) center / cover no-repeat;
+      filter: blur(10px);
+      transform: scale(1.05);
+    }
+    #bg-vignette {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 50% at 50% 55%, rgba(26,23,20,0.4) 0%, transparent 100%);
       pointer-events: none;
-      opacity: 0.03;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E");
-      mix-blend-mode: multiply;
     }
 
-    /* ============================================================
-       SMOOTH SCROLL SYSTEM
-    ============================================================ */
-    #smooth-wrapper {
-      position: static;
-      width: 100%;
-      height: auto;
-      overflow: visible;
-    }
-    #smooth-content {
-      /* no transform — native scroll */
-    }
-
-    /* ============================================================
-       SKIP LINK
-    ============================================================ */
-    .skip-link {
+    #overlay {
       position: fixed;
-      top: -100%;
-      left: 1rem;
-      z-index: 10001;
-      background: var(--cta-bg);
-      color: var(--white);
-      padding: 0.75rem 1.5rem;
-      font-family: 'Raleway', sans-serif;
-      font-size: 0.875rem;
-      border-radius: 0 0 8px 8px;
-      text-decoration: none;
-      transition: top 0.2s;
+      inset: 0;
+      background: #1a1714;
     }
-    .skip-link:focus { top: 0; }
 
-    /* ============================================================
-       CUSTOM CURSOR (desktop only)
-    ============================================================ */
-    #cursor-dot {
+    /* The spinner line.
+       Positioned so its bottom edge sits at vertical center (50vh),
+       horizontally at 65% of viewport width.
+       It grows upward — height animates from 0 to 50vh.
+       transform-origin: bottom center ensures growth goes upward. */
+    #line {
       position: fixed;
-      width: 8px; height: 8px;
+      bottom: 50%;
+      left: calc(65% - 0.5px);
+      width: 1px;
+      height: 0;
+      background: #b08a72;
+      transform-origin: bottom center;
+      box-shadow: 0 0 4px 1px rgba(176, 138, 114, 0.3);
+    }
+
+    #brand-text {
+      position: fixed;
+      bottom: 50%;
+      /* misma altura que la base de la línea */
+      right: calc(35% + 12px);
+      /* a la izquierda de la línea */
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 18px;
+      letter-spacing: 3px;
+      color: #b08a72;
+      opacity: 0.8;
+      white-space: nowrap;
+      text-align: right;
+    }
+
+    .wave-ring {
+      position: fixed;
+      z-index: 5;
       border-radius: 50%;
-      background: var(--bronze-accent);
       pointer-events: none;
-      z-index: 10000;
+      top: 45%;
+      left: 40%;
+      width: 0;
+      height: 0;
       transform: translate(-50%, -50%);
-      transition: width 0.2s, height 0.2s, background 0.2s;
-    }
-    #cursor-ring {
-      position: fixed;
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      border: 1px solid rgba(122, 106, 88, 0.6);
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: width 0.3s var(--ease-out), height 0.3s var(--ease-out), border-color 0.3s;
-    }
-    #cursor-dot.expanded { width: 6px; height: 6px; background: var(--warm-rose); }
-    #cursor-ring.expanded { width: 56px; height: 56px; border-color: rgba(176, 138, 114, 0.5); }
-    @media (hover: none) {
-      #cursor-dot, #cursor-ring { display: none; }
-    }
-
-    /* ============================================================
-       NAV TOPBAR
-    ============================================================ */
-    :root { --topbar-h: 32px; }
-    .nav-topbar {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 1001;
-      height: var(--topbar-h);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(26, 23, 20, 0.95);
-      border-bottom: 1px solid rgba(122, 106, 88, 0.15);
-    }
-    .nav-topbar p {
-      font-family: 'Raleway', sans-serif;
-      font-size: 0.68rem;
-      font-weight: 300;
-      letter-spacing: 0.14em;
-      color: rgba(254,254,254,0.5);
-    }
-    .nav-topbar a {
-      color: rgba(254,254,254,0.55);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .nav-topbar a:hover { color: var(--warm-rose); }
-
-    /* ============================================================
-       NAV
-    ============================================================ */
-    .nav {
-      position: fixed;
-      top: var(--topbar-h); left: 0; right: 0;
-      z-index: 1000;
-      height: var(--nav-h);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 clamp(1.5rem, 5vw, 4rem);
-      transition: background 0.5s var(--ease-in-out), backdrop-filter 0.5s;
-    }
-    .nav.nav-clear { background: transparent; }
-    .nav.nav-solid {
-      background: rgba(26, 23, 20, 0.88);
-      backdrop-filter: blur(20px) saturate(1.4);
-      -webkit-backdrop-filter: blur(20px) saturate(1.4);
-    }
-    .nav-logo {
-      font-family: 'Lora', serif;
-      font-style: italic;
-      font-size: 1.2rem;
-      color: var(--white);
-      text-decoration: none;
-      letter-spacing: 0.02em;
-      flex-shrink: 0;
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      list-style: none;
-    }
-    /* Nav item with optional dropdown */
-    .nav-item {
-      position: relative;
-    }
-    .nav-item > a {
-      font-family: 'Raleway', sans-serif;
-      font-weight: 400;
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(254,254,254,0.72);
-      text-decoration: none;
-      transition: color 0.25s;
-      padding: 0.5rem 0.9rem;
-      display: block;
-      white-space: nowrap;
-    }
-    .nav-item > a:hover { color: var(--white); }
-    /* Dropdown */
-    .nav-dropdown {
-      position: absolute;
-      top: calc(100% + 8px);
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(26, 23, 20, 0.96);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(122, 106, 88, 0.18);
-      border-radius: 8px;
-      padding: 0.6rem 0;
-      list-style: none;
-      min-width: 180px;
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out);
-      transform: translateX(-50%) translateY(-4px);
-    }
-    .nav-item:hover .nav-dropdown {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: all;
-      transform: translateX(-50%) translateY(0);
-    }
-    .nav-dropdown li a {
-      display: block;
-      font-family: 'Raleway', sans-serif;
-      font-weight: 300;
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      color: rgba(254,254,254,0.6);
-      text-decoration: none;
-      padding: 0.5rem 1.2rem;
-      transition: color 0.2s, background 0.2s;
-      white-space: nowrap;
-    }
-    .nav-dropdown li a:hover {
-      color: var(--white);
-      background: rgba(122, 106, 88, 0.12);
-    }
-    .nav-cta {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.6rem 1.5rem;
-      background: var(--warm-rose);
-      color: var(--white) !important;
-      border-radius: 100px;
-      font-size: 0.72rem !important;
-      letter-spacing: 0.1em !important;
-      font-weight: 500 !important;
-      transition: background 0.25s, transform 0.25s !important;
-      margin-left: 0.5rem;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .nav-cta:hover { background: #9a7662 !important; transform: translateY(-1px); }
-    .nav-hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 8px;
-      z-index: 1001;
-    }
-    .nav-hamburger span {
-      display: block;
-      width: 24px;
-      height: 1.5px;
-      background: var(--white);
-      transition: transform 0.3s, opacity 0.3s;
-    }
-    .nav-hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-    .nav-hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
-    .nav-hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-
-    /* ============================================================
-       MOBILE MENU
-    ============================================================ */
-    .mobile-menu {
-      position: fixed;
-      inset: 0;
-      z-index: 999;
-      background: var(--dark-bg);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s var(--ease-in-out);
-      overflow-y: auto;
-      padding: 5rem 2rem 3rem;
-    }
-    .mobile-menu.is-open { opacity: 1; pointer-events: all; }
-    .mobile-menu-section {
-      width: 100%;
-      max-width: 320px;
-      margin-bottom: 1.5rem;
-    }
-    .mobile-menu-section > a,
-    .mobile-menu-section > span {
-      font-family: 'Lora', serif;
-      font-style: italic;
-      font-size: clamp(1.6rem, 5vw, 2.4rem);
-      color: var(--white);
-      text-decoration: none;
-      transition: color 0.2s;
-      display: block;
-      margin-bottom: 0.4rem;
-    }
-    .mobile-menu-section > span {
-      color: rgba(254,254,254,0.55);
-      font-size: clamp(1.4rem, 4.5vw, 2.1rem);
-    }
-    .mobile-menu-section:hover > a { color: var(--warm-rose); }
-    .mobile-sub {
-      list-style: none;
-      padding-left: 1rem;
-      border-left: 1px solid rgba(122, 106, 88, 0.25);
-    }
-    .mobile-sub li { margin-bottom: 0.3rem; }
-    .mobile-sub li a {
-      font-family: 'Raleway', sans-serif;
-      font-weight: 300;
-      font-size: 0.82rem;
-      letter-spacing: 0.06em;
-      color: rgba(254,254,254,0.5);
-      text-decoration: none;
-      transition: color 0.2s;
-      display: block;
-      padding: 0.2rem 0;
-    }
-    .mobile-sub li a:hover { color: var(--warm-rose); }
-    .mobile-menu-cta {
-      margin-top: 2rem;
-      display: inline-flex;
-      padding: 1rem 2.5rem;
-      background: var(--warm-rose);
-      color: var(--white) !important;
-      border-radius: 100px;
-      font-family: 'Raleway', sans-serif !important;
-      font-style: normal !important;
-      font-size: 0.9rem !important;
-      letter-spacing: 0.1em;
-      font-weight: 500 !important;
-      text-decoration: none;
-    }
-
-    /* ============================================================
-       LATERAL TIMELINE (fixed, desktop only)
-    ============================================================ */
-    #lateral-timeline {
-      position: fixed;
-      left: clamp(1.2rem, 2.5vw, 2.5rem);
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 900;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0;
-    }
-    .tl-item {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      position: relative;
-    }
-    .tl-dot-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 12px;
-    }
-    .tl-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      border: 1.5px solid var(--bronze-accent);
-      background: transparent;
-      flex-shrink: 0;
-      transition: background 0.4s, border-color 0.4s, transform 0.4s;
-    }
-    .tl-item.active .tl-dot {
-      background: var(--bronze-accent);
-      transform: scale(1.3);
-    }
-    .tl-line-seg {
-      width: 1px;
-      height: 32px;
-      background: rgba(122, 106, 88, 0.2);
-      position: relative;
-      overflow: hidden;
-    }
-    .tl-line-seg::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%;
-      height: 0%;
-      background: var(--bronze-accent);
-      transition: height 0.6s var(--ease-out);
-    }
-    .tl-line-seg.filled::after { height: 100%; }
-    .tl-label {
-      font-family: 'Raleway', sans-serif;
-      font-size: 0.65rem;
-      font-weight: 400;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(122, 106, 88, 0.0);
-      white-space: nowrap;
-      transition: color 0.4s, opacity 0.4s;
-      pointer-events: none;
-    }
-    .tl-item.active .tl-label {
-      color: var(--bronze-accent);
-    }
-    .tl-item:hover .tl-label {
-      color: rgba(122, 106, 88, 0.7);
-    }
-    @media (max-width: 900px) { #lateral-timeline { display: none; } }
-
-    /* ============================================================
-       CONTINUOUS SVG THREAD LINE
-    ============================================================ */
-    #svg-thread {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      pointer-events: none;
-      z-index: 2;
-      width: 2px;
-    }
-    #svg-thread path {
-      fill: none;
-      stroke: var(--bronze-accent);
-      stroke-width: 1;
-      opacity: 0.28;
-      stroke-dasharray: 9999;
-      stroke-dashoffset: 9999;
-    }
-
-    /* ============================================================
-       SCENES — general
-    ============================================================ */
-    .scene { position: relative; }
-    .scene-sticky {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    /* ============================================================
-       SCENE 1: HERO
-    ============================================================ */
-    #scene-hero { height: 280vh; }
-    .hero-sticky {
-      background: var(--dark-bg);
-      display: grid;
-      place-items: center;
-    }
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      will-change: transform, opacity;
-      transform-origin: 60% 50%;
-    }
-    .hero-bg img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      filter: sepia(0.08) saturate(0.85) brightness(0.78);
-      display: block;
-    }
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(26,23,20,0.1) 0%,
-        rgba(26,23,20,0.05) 25%,
-        rgba(26,23,20,0.3) 60%,
-        rgba(26,23,20,0.82) 100%
-      );
-    }
-    .hero-content {
-      position: absolute;
-      bottom: clamp(3rem, 8vh, 7rem);
-      left: clamp(1.5rem, 8vw, 10rem);
-      right: clamp(1.5rem, 8vw, 10rem);
-    }
-    .hero-eyebrow {
-      font-family: 'Raleway', sans-serif;
-      font-size: 0.7rem;
-      font-weight: 400;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--warm-rose);
-      margin-bottom: 1.25rem;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
-    }
-    .hero-eyebrow.reveal { opacity: 1; transform: translateY(0); }
-
-    /* Letter-by-letter headline */
-    .hero-headline {
-      font-family: 'Lora', serif;
-      font-weight: 400;
-      font-size: clamp(2.6rem, 5.8vw, 7rem);
-      line-height: 1.06;
-      color: var(--white);
-      margin-bottom: 1.75rem;
-      letter-spacing: -0.015em;
-    }
-    .hero-headline .char {
-      display: inline-block;
-      opacity: 0;
-      transform: translateY(30px);
-      white-space: pre;
-      animation: charReveal 0.6s var(--ease-out) forwards;
-      animation-delay: calc(var(--char-i, 0) * 0.03s + 0.3s);
-    }
-    @keyframes charReveal {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .hero-headline .char.space { display: inline; }
-    .hero-subtitle {
-      font-family: 'Raleway', sans-serif;
-      font-weight: 300;
-      font-size: clamp(0.95rem, 1.5vw, 1.15rem);
-      color: rgba(254,254,254,0.65);
-      letter-spacing: 0.05em;
-      max-width: 520px;
-      opacity: 0;
-      transform: translateY(14px);
-      animation: fadeSlideUp 0.6s var(--ease-out) 1.2s forwards;
-    }
-    @keyframes fadeSlideUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .hero-subtitle.reveal { opacity: 1; transform: translateY(0); }
-    .hero-cta-group {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      margin-top: 2.25rem;
-      opacity: 0;
-      transform: translateY(18px);
-      animation: fadeSlideUp 0.6s var(--ease-out) 1.5s forwards;
-    }
-
-    /* Scroll indicator */
-    .hero-scroll-hint {
-      position: absolute;
-      bottom: 2.5rem;
-      right: clamp(1.5rem, 5vw, 4rem);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.6rem;
-      opacity: 0;
-      transition: opacity 1s;
-    }
-    .hero-scroll-hint.reveal { opacity: 1; }
-    .hero-scroll-hint span {
-      font-family: 'Raleway', sans-serif;
-      font-size: 0.6rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: rgba(254,254,254,0.35);
-      writing-mode: vertical-rl;
-    }
-    .hero-scroll-bar {
-      width: 1px;
-      height: 52px;
-      background: linear-gradient(to bottom, rgba(254,254,254,0.4), transparent);
-      animation: scrollPulse 2s ease-in-out infinite;
-    }
-    @keyframes scrollPulse {
-      0%, 100% { opacity: 0.4; transform: scaleY(1); }
-      50% { opacity: 1; transform: scaleY(1.15); }
-    }
-
-    /* ============================================================
-       BUTTONS
-    ============================================================ */
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.9rem 2.25rem;
-      background: var(--warm-rose);
-      color: var(--white);
-      font-family: 'Raleway', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border-radius: 100px;
-      transition: background 0.3s, transform 0.3s var(--ease-out);
-    }
-    .btn-primary:hover { background: #9a7662; transform: translateY(-2px); }
-    .btn-ghost {
-      font-family: 'Raleway', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 400;
-      letter-spacing: 0.1em;
-      color: rgba(254,254,254,0.6);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(254,254,254,0.28);
-      padding-bottom: 2px;
-      transition: color 0.25s, border-color 0.25s;
-    }
-    .btn-ghost:hover { color: var(--white); border-color: rgba(254,254,254,0.65); }
-
-    /* ============================================================
-       SCENE 2: PHILOSOPHY
-    ============================================================ */
-    #scene-philosophy { height: 300vh; }
-    .philosophy-sticky {
-      background: var(--pearl);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .philosophy-bg-number {
-      position: absolute;
-      right: -2vw;
-      top: 50%;
-      transform: translateY(-50%);
-      font-family: 'Lora', serif;
-      font-size: clamp(16rem, 30vw, 28rem);
-      font-weight: 400;
-      color: rgba(122, 106, 88, 0.055);
-      line-height: 1;
-      user-select: none;
-      pointer-events: none;
-      will-change: transform;
-    }
-    .philosophy-inner {
-      position: relative;
-      z-index: 2;
-      max-width: 860px;
-      padding: 0 clamp(1.5rem, 6vw, 5rem);
-      text-align: center;
-    }
-    .philosophy-eyebrow {
-      font-family: 'Raleway', sans-serif;
-      font-size: 0.68rem;
-      font-weight: 400;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--warm-rose);
-      margin-bottom: 2.5rem;
-      opacity: 0;
-      transform: translateY(12px);
-    }
-    .philosophy-sticky.in-view .philosophy-eyebrow {
-      animation: fadeSlideUp 0.6s var(--ease-out) 0.1s forwards;
-    }
-    .philosophy-quote {
-      font-family: 'Lora', serif;
-      font-style: italic;
-      font-size: clamp(1.55rem, 3.2vw, 2.8rem);
-      line-height: 1.38;
-      color: var(--text-primary);
-      margin-bottom: 3.5rem;
-      letter-spacing: -0.01em;
-    }
-    .philosophy-quote .char {
-      display: inline-block;
-      opacity: 0;
-      transform: translateY(20px);
-      white-space: pre;
-    }
-    /* Philosophy chars: scroll-driven via JS revealCharsOnProgress, NOT CSS animation */
-    .philosophy-quote .char.space { display: inline; }
-    .philosophy-stats {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: clamp(2.5rem, 7vw, 6rem);
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    .philosophy-sticky.in-view .philosophy-stats {
-      animation: fadeSlideUp 0.6s var(--ease-out) 1.0s forwards;
-    }
-    .stat-item { text-align: center; }
-    .stat-number {
-      font-family: 'Lora', serif;
-      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
-      font-weight: 400;
-      color: var(--bronze-text);
-      line-height: 1;
-      margin-bottom: 0.5rem;
-    }
-    .stat-label {
-      font-family: 'Raleway', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 400;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-    }
-    .stat-divider {
-      width: 1px;
-      height: 60px;
-      background: rgba(122, 106, 88, 0.22);
-    }
-
-    /* ============================================================
-       SCENE 3: SERVICES
-    ============================================================ */
-    .service-scene { height: 280vh; }
-    .service-sticky {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      background: var(--dark-bg);
-    }
-    /* Left: visual side */
-    .service-visual {
-      position: relative;
-      overflow: hidden;
-    }
-    .service-bg-img {
-      position: absolute;
-      inset: 0;
-      will-change: transform;
-      transform-origin: center center;
-    }
-    .service-bg-img img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      filter: sepia(0.1) saturate(0.88) brightness(0.8);
-      display: block;
-    }
-    .service-img-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to right,
-        rgba(26,23,20,0.55) 0%,
-        rgba(26,23,20,0.12) 60%,
-        rgba(26,23,20,0) 100%
-      );
-    }
-    /* Anatomical SVG silhouette */
-    .service-silhouette {
-      position: absolute;
-      right: clamp(1.5rem, 4vw, 4rem);
-      bottom: clamp(2rem, 6vh, 5rem);
-      opacity: 0;
-      will-change: opacity, transform;
-    }
-    .service-silhouette svg {
-      stroke: var(--bronze-accent);
-      stroke-width: 1.2;
-      fill: none;
-    }
-    .service-silhouette svg path {
-      stroke-dasharray: 800;
-      stroke-dashoffset: 800;
-    }
-    /* Right: text side */
-    .service-text-side {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: clamp(2.5rem, 6vw, 6rem);
-      position: relative;
-      z-index: 2;
-    }
-    .service-number {
-      font-family: 'Lora', serif;
-      font-size: clamp(5rem, 12vw, 10rem);
-      font-weight: 400;
-      color: rgba(254,254,254,0.05);
-      line-height: 1;
-      position: absolute;
-      top: clamp(1rem, 3vh, 3rem);
-      right: clamp(1.5rem, 4vw, 4rem);
-      user-select: none;
-      pointer-events: none;
-    }
-    .service-eyebrow {
-      font-family: 'Raleway', sans-serif;
-      font-size: 0.66rem;
-      font-weight: 400;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--warm-rose);
-      margin-bottom: 1.25rem;
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    .service-sticky.in-view .service-eyebrow {
-      animation: fadeSlideUp 0.5s var(--ease-out) 0.1s forwards;
-    }
-    .service-title {
-      font-family: 'Lora', serif;
-      font-weight: 400;
-      font-size: clamp(2.4rem, 4.5vw, 4.5rem);
-      line-height: 1.1;
-      color: var(--white);
-      margin-bottom: 1.5rem;
-      letter-spacing: -0.02em;
-    }
-    .service-title .char {
-      display: inline-block;
-      opacity: 0;
-      transform: translateY(24px);
-      white-space: pre;
-    }
-    .service-sticky.in-view .service-title .char {
-      animation: charReveal 0.4s var(--ease-out) forwards;
-      animation-delay: calc(var(--char-i, 0) * 0.025s + 0.1s);
-    }
-    .service-title .char.space { display: inline; }
-    .service-desc {
-      font-family: 'Raleway', sans-serif;
-      font-weight: 300;
-      font-size: clamp(0.9rem, 1.3vw, 1.05rem);
-      line-height: 1.75;
-      color: rgba(254,254,254,0.55);
-      max-width: 440px;
-      margin-bottom: 2rem;
-      opacity: 0;
-      transform: translateY(16px);
-    }
-    .service-sticky.in-view .service-desc {
-      animation: fadeSlideUp 0.5s var(--ease-out) 0.4s forwards;
-    }
-    .service-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      opacity: 0;
-      transform: translateY(12px);
-    }
-    .service-sticky.in-view .service-tags {
-      animation: fadeSlideUp 0.5s var(--ease-out) 0.7s forwards;
-    }
-    .tag {
-      display: inline-block;
-      padding: 0.4rem 1rem;
-      border: 1px solid rgba(122, 106, 88, 0.4);
-      border-radius: 100px;
-      font-family: 'Raleway', sans-serif;
-      font-size: 0.7rem;
-      font-weight: 400;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(254,254,254,0.5);
-      transition: border-color 0.3s, color 0.3s;
-    }
-    .tag:hover {
-      border-color: rgba(176, 138, 114, 0.7);
-      color: rgba(254,254,254,0.8);
-    }
-
-    /* ============================================================
-       SCENE 4: TESTIMONIAL
-    ============================================================ */
-    #scene-testimonial { height: 260vh; }
-    .testimonial-sticky {
-      background: var(--silk);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      /* DO NOT set position:relative here — .scene-sticky provides position:sticky */
-      overflow: clip; /* clip instead of hidden — doesn't break sticky */
-    }
-    .testimonial-bg-quote {
-      position: absolute;
-      top: 8%;
-      left: 5%;
-      font-family: 'Lora', serif;
-      font-size: clamp(10rem, 22vw, 20rem);
-      font-weight: 400;
-      font-style: italic;
-      color: rgba(122, 106, 88, 0.07);
-      line-height: 1;
-      user-select: none;
-      pointer-events: none;
-      will-change: transform;
-    }
-    .testimonial-inner {
-      position: relative;
-      z-index: 2;
-      max-width: 760px;
-      padding: 0 clamp(1.5rem, 6vw, 5rem);
-      text-align: center;
-    }
-    /* SVG quote mark that draws itself */
-    .testimonial-svg-mark {
-      margin-bottom: 2.5rem;
-      display: flex;
-      justify-content: center;
       opacity: 0;
     }
-    .testimonial-sticky.in-view .testimonial-svg-mark {
-      animation: fadeSlideUp 0.6s var(--ease-out) 0.1s forwards;
-    }
-    .testimonial-svg-mark svg path {
-      stroke: var(--bronze-accent);
-      stroke-width: 1.5;
-      fill: none;
-      stroke-dasharray: 200;
-      stroke-dashoffset: 200;
-    }
-    .testimonial-quote {
-      font-family: 'Lora', serif;
-      font-style: italic;
-      font-size: clamp(1.3rem, 2.6vw, 2.2rem);
-      line-height: 1.5;
-      color: var(--text-primary);
-      margin-bottom: 2.5rem;
-      letter-spacing: -0.005em;
-    }
-    .testimonial-quote .char {
-      display: inline-block;
-      opacity: 0;
-      transform: translateY(16px);
-      white-space: pre;
-    }
-    /* Testimonial chars: scroll-driven via JS revealCharsOnProgress, NOT CSS animation */
-    .testimonial-quote .char.space { display: inline; }
-    .testimonial-author {
-      font-family: 'Raleway', sans-serif;
-      font-weight: 400;
-      font-size: 0.78rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--bronze-text);
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    /* Testimonial author: scroll-driven via JS (not CSS animation) */
-
-    /* ============================================================
-       SCENE 5: TRUST
-    ============================================================ */
-    #scene-trust { height: 260vh; }
-    .trust-sticky {
-      background: var(--pearl);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4rem;
-    }
-    .trust-header {
-      text-align: center;
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    .trust-sticky.in-view .trust-header {
-      animation: fadeSlideUp 0.7s var(--ease-out) 0.2s forwards;
-    }
-    .trust-eyebrow {
-      font-family: 'Raleway', sans-serif;
-      font-size: 0.68rem;
-      font-weight: 400;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--bronze-text);
-      margin-bottom: 1rem;
-    }
-    .trust-headline {
-      font-family: 'Lora', serif;
-      font-style: italic;
-      font-size: clamp(1.6rem, 3vw, 2.4rem);
-      font-weight: 400;
-      color: var(--text-primary);
-    }
-    .trust-badges {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: clamp(1.5rem, 4vw, 3.5rem);
-      flex-wrap: wrap;
-      padding: 0 clamp(1.5rem, 5vw, 4rem);
-    }
-    .trust-badge {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.85rem;
-      opacity: 0;
-      will-change: transform, opacity;
-    }
-    .trust-badge-ring {
-      width: 80px; height: 80px;
-      border-radius: 50%;
-      border: 1.5px solid rgba(122, 106, 88, 0.22);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: border-color 0.4s;
-    }
-    .trust-badge:hover .trust-badge-ring {
-      border-color: rgba(122, 106, 88, 0.55);
-    }
-    .trust-badge-ring svg {
-      width: 32px; height: 32px;
-      stroke: var(--bronze-accent);
-      stroke-width: 1.2;
-      fill: none;
-    }
-    .trust-badge-name {
-      font-family: 'Raleway', sans-serif;
-      font-size: 0.66rem;
-      font-weight: 400;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      text-align: center;
-      max-width: 100px;
-    }
-    .trust-colegiado {
-      font-family: 'Raleway', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 400;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--bronze-text);
-      opacity: 0;
-      border-top: 1px solid rgba(122, 106, 88, 0.18);
-      padding-top: 1.5rem;
-      text-align: center;
-    }
-
-    /* ============================================================
-       SCENE 6: CTA
-    ============================================================ */
-    #scene-cta { height: auto; min-height: 80vh; }
-    .cta-section {
-      background: var(--dark-bg);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: clamp(5rem, 12vh, 10rem) clamp(1.5rem, 6vw, 5rem);
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .cta-section::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 50%;
-      transform: translateX(-50%);
-      width: 1px;
-      height: 80px;
-      background: linear-gradient(to bottom, transparent, rgba(122, 106, 88, 0.35));
-    }
-    .cta-eyebrow {
-      font-family: 'Raleway', sans-serif;
-      font-size: 0.68rem;
-      font-weight: 400;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--warm-rose);
-      margin-bottom: 1.75rem;
-    }
-    .cta-headline {
-      font-family: 'Lora', serif;
-      font-weight: 400;
-      font-size: clamp(2rem, 4.5vw, 4rem);
-      line-height: 1.15;
-      color: var(--white);
-      margin-bottom: 1.25rem;
-      letter-spacing: -0.015em;
-    }
-    .cta-headline em { font-style: italic; color: var(--warm-rose); }
-    .cta-sub {
-      font-family: 'Raleway', sans-serif;
-      font-weight: 300;
-      font-size: clamp(0.9rem, 1.5vw, 1.1rem);
-      color: rgba(254,254,254,0.5);
-      max-width: 460px;
-      line-height: 1.7;
-      margin-bottom: 2.75rem;
-    }
-    .cta-actions {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .btn-cta-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 1rem 2.5rem;
-      background: var(--warm-rose);
-      color: var(--white);
-      font-family: 'Raleway', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border-radius: 100px;
-      transition: background 0.3s, transform 0.3s var(--ease-out), box-shadow 0.3s;
-    }
-    .btn-cta-primary:hover {
-      background: #9a7662;
-      transform: translateY(-2px);
-      box-shadow: 0 12px 40px rgba(176, 138, 114, 0.28);
-    }
-    .btn-cta-ghost {
-      font-family: 'Raleway', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 400;
-      letter-spacing: 0.1em;
-      color: rgba(254,254,254,0.5);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(254,254,254,0.22);
-      padding-bottom: 2px;
-      transition: color 0.25s, border-color 0.25s;
-    }
-    .btn-cta-ghost:hover { color: var(--white); border-color: rgba(254,254,254,0.6); }
-
-    /* ============================================================
-       FOOTER
-    ============================================================ */
-    footer {
-      background: #110f0d;
-      padding: clamp(3rem, 8vh, 6rem) clamp(1.5rem, 6vw, 5rem) 2.5rem;
-    }
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: clamp(2rem, 5vw, 4rem);
-      max-width: 1200px;
-      margin: 0 auto 3rem;
-    }
-    .footer-brand .footer-logo {
-      font-family: 'Lora', serif;
-      font-style: italic;
-      font-size: 1.2rem;
-      color: var(--white);
-      text-decoration: none;
-      display: block;
-      margin-bottom: 1rem;
-    }
-    .footer-brand p {
-      font-family: 'Raleway', sans-serif;
-      font-weight: 300;
-      font-size: 0.82rem;
-      line-height: 1.7;
-      color: rgba(254,254,254,0.4);
-      max-width: 260px;
-    }
-    .footer-col h4 {
-      font-family: 'Raleway', sans-serif;
-      font-size: 0.66rem;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: rgba(254,254,254,0.35);
-      margin-bottom: 1.25rem;
-    }
-    .footer-col ul { list-style: none; }
-    .footer-col ul li { margin-bottom: 0.75rem; }
-    .footer-col ul li a {
-      font-family: 'Raleway', sans-serif;
-      font-weight: 300;
-      font-size: 0.82rem;
-      color: rgba(254,254,254,0.45);
-      text-decoration: none;
-      transition: color 0.25s;
-    }
-    .footer-col ul li a:hover { color: rgba(254,254,254,0.82); }
-    .footer-bottom {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 2rem;
-      border-top: 1px solid rgba(254,254,254,0.06);
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-    .footer-bottom p {
-      font-family: 'Raleway', sans-serif;
-      font-size: 0.72rem;
-      color: rgba(254,254,254,0.25);
-    }
-
-    /* ============================================================
-       ELENA CHAT
-    ============================================================ */
-    #elena-chat {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      z-index: 1001;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 0.75rem;
-    }
-    .elena-tooltip {
-      background: var(--dark-bg);
-      border: 1px solid rgba(122, 106, 88, 0.25);
-      color: rgba(254,254,254,0.75);
-      font-family: 'Raleway', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 300;
-      padding: 0.5rem 1rem;
-      border-radius: 100px;
-      white-space: nowrap;
-      opacity: 0;
-      transform: translateX(10px);
-      transition: opacity 0.4s, transform 0.4s;
-      pointer-events: none;
-    }
-    .elena-tooltip.show { opacity: 1; transform: translateX(0); }
-    .elena-btn {
-      width: 56px; height: 56px;
-      border-radius: 50%;
-      background: var(--warm-rose);
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      transition: transform 0.3s var(--ease-out), background 0.3s;
-    }
-    .elena-btn:hover { transform: scale(1.08); background: #9a7662; }
-    .elena-btn::before {
-      content: '';
-      position: absolute;
-      inset: -4px;
-      border-radius: 50%;
-      border: 1px solid rgba(176, 138, 114, 0.4);
-      animation: elenaPulse 2.5s ease-in-out infinite;
-    }
-    @keyframes elenaPulse {
-      0%, 100% { transform: scale(1); opacity: 0.4; }
-      50% { transform: scale(1.18); opacity: 0; }
-    }
-    .elena-btn svg {
-      width: 22px; height: 22px;
-      stroke: var(--white);
-      stroke-width: 1.8;
-      fill: none;
-    }
-
-    /* ============================================================
-       REDUCED MOTION
-    ============================================================ */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.001ms !important;
-        transition-duration: 0.001ms !important;
-      }
-      .char, .hero-eyebrow, .hero-subtitle, .hero-cta-group,
-      .hero-scroll-hint, .philosophy-eyebrow, .philosophy-stats,
-      .service-eyebrow, .service-desc, .service-tags,
-      .testimonial-svg-mark, .testimonial-author,
-      .trust-header, .trust-badge, .trust-colegiado {
-        opacity: 1 !important;
-        transform: none !important;
-      }
-    }
-
-    /* ============================================================
-       MOBILE
-    ============================================================ */
-    @media (max-width: 900px) {
-      .nav-topbar { display: none; }
-      .nav { top: 0; }
-      .nav-links { display: none; }
-      .nav-hamburger { display: flex; }
-
-      .service-sticky {
-        grid-template-columns: 1fr;
-      }
-      .service-visual {
-        height: 40vh;
-      }
-      .service-text-side {
-        height: 60vh;
-        overflow-y: auto;
-      }
-      .service-number { display: none; }
-
-      .footer-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-    @media (max-width: 600px) {
-      .footer-grid {
-        grid-template-columns: 1fr;
-      }
-      .footer-bottom {
-        flex-direction: column;
-        text-align: center;
-      }
-      .trust-badge-ring { width: 64px; height: 64px; }
-    }
+    #wave1 { border: 4px solid rgba(176, 138, 114, 0.6); }
+    #wave2 { border: 3px solid rgba(176, 138, 114, 0.35); }
+    #wave3 { border: 4px solid rgba(176, 138, 114, 0.45); }
+    #wave4 { border: 3px solid rgba(176, 138, 114, 0.25); }
   </style>
 </head>
+
 <body>
-  <!-- SKIP LINK -->
-  <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
 
-  <!-- CURSOR (desktop only) -->
-  <div id="cursor-dot" aria-hidden="true"></div>
-  <div id="cursor-ring" aria-hidden="true"></div>
+  <div id="bg"></div>
+  <div id="bg-vignette"></div>
+  <div id="overlay"></div>
 
-  <!-- TOPBAR -->
-  <div class="nav-topbar" aria-label="Información de contacto">
-    <p>
-      <a href="tel:+34696872067">(+34) 696 872 067</a>
-      &nbsp;&middot;&nbsp;
-      <a href="mailto:info@doctoradurban.com">info@doctoradurban.com</a>
+  <!-- Ondas circulares de reveal -->
+  <div class="wave-ring" id="wave1"></div>
+  <div class="wave-ring" id="wave2"></div>
+  <div class="wave-ring" id="wave3"></div>
+  <div class="wave-ring" id="wave4"></div>
+
+  <!-- Texto final de la landing — posición definitiva -->
+  <div id="landing-text"
+    style="position:fixed; top:45%; left:50%; transform:translate(-50%,-50%); text-align:center; z-index:2; opacity:0; visibility:hidden;">
+    <h1
+      style="font-family:Georgia,'Times New Roman',serif; font-size:48px; color:#fdfcfb; letter-spacing:2px; margin:0; font-weight:300; text-shadow: 0 2px 12px rgba(26,23,20,0.6);">
+      Dra. Durban</h1>
+    <p
+      style="font-family:system-ui,sans-serif; font-size:13px; color:#fdfcfb; letter-spacing:4.5px; text-shadow: 0 1px 8px rgba(26,23,20,0.6); text-transform:uppercase; margin-top:4px; font-weight:300;">
+      Cirugía estética en Sevilla</p>
+    <p
+      style="font-family:Georgia,'Times New Roman',serif; font-size:24px; color:#4a3a2e; letter-spacing:4px; margin-top:35px; font-weight:500; font-style:italic; background: rgba(176,138,114,0.35); backdrop-filter: blur(30px) saturate(1.2); -webkit-backdrop-filter: blur(30px) saturate(1.2); padding: 12px 24px; border-radius: 8px;">
+      <span
+        style="font-size:30px; vertical-align:middle; position:relative; top:-8px; margin-right:4px;">&#10075;</span><span id="slogan-text">Intentamos hacer fácil el paso más difícil</span><span
+        style="font-size:30px; vertical-align:middle; position:relative; top:-8px; margin-left:4px;">&#10076;</span>
     </p>
   </div>
+  <div id="line"></div>
+  <div id="brand-text">Dra. Durban</div>
 
-  <!-- NAVIGATION (fixed, outside smooth wrapper) -->
-  <nav class="nav nav-clear" role="navigation" aria-label="Navegación principal">
-    <a href="#" class="nav-logo" aria-label="Dra. Durbán — Inicio">Dra. Durbán</a>
-    <ul class="nav-links" role="list">
-      <li class="nav-item">
-        <a href="#scene-philosophy">Equipo</a>
-        <ul class="nav-dropdown">
-          <li><a href="#">Perfil profesional</a></li>
-          <li><a href="#">La Clínica</a></li>
-          <li><a href="#">10 Claves del Éxito</a></li>
-        </ul>
-      </li>
-      <li class="nav-item">
-        <a href="#scene-silueta">Cirugía corporal</a>
-        <ul class="nav-dropdown">
-          <li><a href="#">Abdominoplastia</a></li>
-          <li><a href="#">Aumento de pecho</a></li>
-          <li><a href="#">Reducción de pecho</a></li>
-          <li><a href="#">Mamas tuberosas</a></li>
-          <li><a href="#">Liposucción</a></li>
-        </ul>
-      </li>
-      <li class="nav-item">
-        <a href="#scene-rostro">Cirugía facial</a>
-        <ul class="nav-dropdown">
-          <li><a href="#">Otoplastia</a></li>
-          <li><a href="#">Rinoplastia</a></li>
-          <li><a href="#">Blefaroplastia</a></li>
-        </ul>
-      </li>
-      <li class="nav-item">
-        <a href="#scene-piel">Medicina estética</a>
-      </li>
-      <li class="nav-item">
-        <a href="#">Dudas</a>
-        <ul class="nav-dropdown">
-          <li><a href="#">Vídeos respuestas</a></li>
-          <li><a href="#">Preguntas frecuentes</a></li>
-        </ul>
-      </li>
-      <li class="nav-item">
-        <a href="#">Blog</a>
-      </li>
-    </ul>
-    <a href="#scene-cta" class="nav-cta">Quiero una cita</a>
-    <button class="nav-hamburger" aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menú">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
-
-  <!-- MOBILE MENU (fixed, outside wrapper) -->
-  <div class="mobile-menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menú principal">
-    <div class="mobile-menu-section">
-      <span>Equipo</span>
-      <ul class="mobile-sub">
-        <li><a href="#scene-philosophy">Perfil profesional</a></li>
-        <li><a href="#">La Clínica</a></li>
-        <li><a href="#">10 Claves del Éxito</a></li>
-      </ul>
-    </div>
-    <div class="mobile-menu-section">
-      <span>Cirugía corporal</span>
-      <ul class="mobile-sub">
-        <li><a href="#scene-silueta">Abdominoplastia</a></li>
-        <li><a href="#scene-silueta">Aumento de pecho</a></li>
-        <li><a href="#scene-silueta">Reducción de pecho</a></li>
-        <li><a href="#scene-silueta">Mamas tuberosas</a></li>
-        <li><a href="#scene-silueta">Liposucción</a></li>
-      </ul>
-    </div>
-    <div class="mobile-menu-section">
-      <span>Cirugía facial</span>
-      <ul class="mobile-sub">
-        <li><a href="#scene-rostro">Otoplastia</a></li>
-        <li><a href="#scene-rostro">Rinoplastia</a></li>
-        <li><a href="#scene-rostro">Blefaroplastia</a></li>
-      </ul>
-    </div>
-    <div class="mobile-menu-section">
-      <a href="#scene-piel">Medicina estética</a>
-    </div>
-    <div class="mobile-menu-section">
-      <span>Dudas</span>
-      <ul class="mobile-sub">
-        <li><a href="#">Vídeos respuestas</a></li>
-        <li><a href="#">Preguntas frecuentes</a></li>
-      </ul>
-    </div>
-    <div class="mobile-menu-section">
-      <a href="#">Blog</a>
-    </div>
-    <a href="#scene-cta" class="mobile-menu-cta">Quiero una cita</a>
+  <!-- Pluma que nace del destello en la punta del tajo -->
+  <div id="pluma"
+    style="position:fixed; top:0; left:calc(65% - 26px); width:60px; height:77px; opacity:0; transform-origin:50% 100%;">
+    <svg viewBox="0 0 420 539" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+      <!-- Cuerpo principal -->
+      <path fill="#7a6a58" d="M 350.5,131.5 C 353.181,153.296 348.347,173.296 336,191.5C 320.079,214.755 300.245,233.922 276.5,249C 274.06,250.303 271.56,251.47 269,252.5C 268.5,252.167 268,251.833 267.5,251.5C 277.728,235.985 283.894,218.985 286,200.5C 268.323,236.715 245.156,268.882 216.5,297C 215.833,297.667 215.167,297.667 214.5,297C 223.779,280.947 232.946,264.78 242,248.5C 245.594,241.988 248.594,235.322 251,228.5C 237.416,247.325 225.082,266.991 214,287.5C 198.098,324.453 189.765,363.119 189,403.5C 188.195,420.544 188.362,437.544 189.5,454.5C 188.747,458.517 188.08,462.684 187.5,467C 189.102,471.396 188.769,475.563 186.5,479.5C 188.066,481.962 188.399,484.462 187.5,487C 188.078,488.417 189.078,489.25 190.5,489.5C 191.488,494.64 191.821,499.974 191.5,505.5C 190.178,505.67 189.011,505.337 188,504.5C 183.651,496.141 180.151,487.474 177.5,478.5C 177.611,477.883 177.944,477.383 178.5,477C 176.11,471.162 174.11,465.162 172.5,459C 172.833,458.667 173.167,458.333 173.5,458C 171.815,454.965 170.315,451.798 169,448.5C 168.612,443.548 167.779,438.715 166.5,434C 166.833,433.667 167.167,433.333 167.5,433C 166.426,432.261 165.759,431.261 165.5,430C 166.079,427.946 166.412,425.946 166.5,424C 166.162,420.746 165.162,417.912 163.5,415.5C 162.662,415.158 162.328,414.492 162.5,413.5C 163.216,411.444 163.883,409.277 164.5,407C 164.711,404.831 164.378,402.497 163.5,400C 164.249,392.346 164.916,384.679 165.5,377C 164.851,374.081 164.851,371.248 165.5,368.5C 165.006,366.974 164.339,365.641 163.5,364.5C 163.99,361.345 164.656,358.345 165.5,355.5C 166.714,351.307 167.88,346.974 169,342.5C 172.438,340.629 173.271,337.962 171.5,334.5C 171.79,332.956 172.456,331.623 173.5,330.5C 172.71,325.592 172.71,320.258 173.5,314.5C 179.373,289.87 188.373,266.536 200.5,244.5C 201.922,244.291 203.255,243.791 204.5,243C 204.167,242.667 203.833,242.333 203.5,242C 204.46,240.581 205.293,239.081 206,237.5C 206.333,237.833 206.667,238.167 207,238.5C 207.422,236.645 207.922,234.811 208.5,233C 214.736,222.98 222.236,213.147 231,203.5C 231.791,202.255 232.291,200.922 232.5,199.5C 243.519,186.979 256.185,176.479 270.5,168C 306.023,137.579 314.689,100.745 296.5,57.5C 297.723,56.3861 299.056,56.2195 300.5,57C 320.577,66.4128 334.41,81.5795 342,102.5C 345.325,112.153 348.158,121.82 350.5,131.5 Z"/>
+      <!-- Curva secundaria (la pluma pequeña de la izquierda) -->
+      <path fill="#7a6a58" d="M 252.5,144.5 C 253.552,144.351 254.552,144.517 255.5,145C 241.749,154.083 229.916,165.249 220,178.5C 204.251,205 188.251,231.333 172,257.5C 150.41,283.729 122.576,298.896 88.5,303C 79.8654,304.312 71.1987,304.645 62.5,304C 96.9207,300.879 125.921,286.879 149.5,262C 146.123,261.548 142.789,260.882 139.5,260C 138.549,259.282 138.383,258.449 139,257.5C 154.396,249.445 167.396,238.445 178,224.5C 178.688,223.668 178.521,223.002 177.5,222.5C 174.607,223.74 171.773,225.074 169,226.5C 168.308,225.975 167.808,225.308 167.5,224.5C 183.403,198.426 203.403,175.926 227.5,157C 235.378,151.728 243.712,147.561 252.5,144.5 Z"/>
+      <!-- Highlights internos -->
+      <path opacity="0.5" fill="#d4b8a8" d="M 232.5,199.5 C 232.291,200.922 231.791,202.255 231,203.5C 222.236,213.147 214.736,222.98 208.5,233C 207.922,234.811 207.422,236.645 207,238.5C 206.667,238.167 206.333,237.833 206,237.5C 205.293,239.081 204.46,240.581 203.5,242C 203.833,242.333 204.167,242.667 204.5,243C 203.255,243.791 201.922,244.291 200.5,244.5C 208.969,227.88 219.635,212.88 232.5,199.5 Z"/>
+      <path opacity="0.5" fill="#d4b8a8" d="M 173.5,314.5 C 172.71,320.258 172.71,325.592 173.5,330.5C 172.456,331.623 171.79,332.956 171.5,334.5C 173.271,337.962 172.438,340.629 169,342.5C 167.88,346.974 166.714,351.307 165.5,355.5C 166.651,341.415 169.317,327.749 173.5,314.5 Z"/>
+      <path opacity="0.5" fill="#d4b8a8" d="M 163.5,364.5 C 164.339,365.641 165.006,366.974 165.5,368.5C 164.851,371.248 164.851,374.081 165.5,377C 164.916,384.679 164.249,392.346 163.5,400C 164.378,402.497 164.711,404.831 164.5,407C 163.883,409.277 163.216,411.444 162.5,413.5C 162.383,397.154 162.717,380.821 163.5,364.5 Z"/>
+      <path opacity="0.4" fill="#d4b8a8" d="M 163.5,415.5 C 165.162,417.912 166.162,420.746 166.5,424C 166.412,425.946 166.079,427.946 165.5,430C 165.759,431.261 166.426,432.261 167.5,433C 167.167,433.333 166.833,433.667 166.5,434C 167.779,438.715 168.612,443.548 169,448.5C 170.315,451.798 171.815,454.965 173.5,458C 173.167,458.333 172.833,458.667 172.5,459C 174.11,465.162 176.11,471.162 178.5,477C 177.944,477.383 177.611,477.883 177.5,478.5C 168.884,458.517 164.218,437.517 163.5,415.5 Z"/>
+      <path opacity="0.4" fill="#d4b8a8" d="M 189.5,454.5 C 189.917,465.887 190.251,477.553 190.5,489.5C 189.078,489.25 188.078,488.417 187.5,487C 188.399,484.462 188.066,481.962 186.5,479.5C 188.769,475.563 189.102,471.396 187.5,467C 188.08,462.684 188.747,458.517 189.5,454.5 Z"/>
+    </svg>
   </div>
 
-  <!-- LATERAL TIMELINE (fixed, outside smooth wrapper) -->
-  <nav id="lateral-timeline" role="navigation" aria-label="Navegación lateral de secciones">
-    <div class="tl-item active" data-section="hero">
-      <div class="tl-dot-wrap">
-        <div class="tl-dot"></div>
-        <div class="tl-line-seg filled"></div>
-      </div>
-      <span class="tl-label">Inicio</span>
-    </div>
-    <div class="tl-item" data-section="philosophy">
-      <div class="tl-dot-wrap">
-        <div class="tl-dot"></div>
-        <div class="tl-line-seg"></div>
-      </div>
-      <span class="tl-label">Filosofía</span>
-    </div>
-    <div class="tl-item" data-section="rostro">
-      <div class="tl-dot-wrap">
-        <div class="tl-dot"></div>
-        <div class="tl-line-seg"></div>
-      </div>
-      <span class="tl-label">Rostro</span>
-    </div>
-    <div class="tl-item" data-section="silueta">
-      <div class="tl-dot-wrap">
-        <div class="tl-dot"></div>
-        <div class="tl-line-seg"></div>
-      </div>
-      <span class="tl-label">Silueta</span>
-    </div>
-    <div class="tl-item" data-section="piel">
-      <div class="tl-dot-wrap">
-        <div class="tl-dot"></div>
-        <div class="tl-line-seg"></div>
-      </div>
-      <span class="tl-label">Piel</span>
-    </div>
-    <div class="tl-item" data-section="trust">
-      <div class="tl-dot-wrap">
-        <div class="tl-dot"></div>
-        <div class="tl-line-seg" style="height:0"></div>
-      </div>
-      <span class="tl-label">Confianza</span>
-    </div>
-  </nav>
-
-  <!-- ELENA CHAT (fixed, outside wrapper) -->
-  <div id="elena-chat" role="complementary" aria-label="Asistente virtual Elena">
-    <div class="elena-tooltip" id="elena-tooltip">Hola, soy Elena</div>
-    <button class="elena-btn" aria-label="Hablar con Elena, asistente virtual" id="elena-toggle">
-      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-      </svg>
-    </button>
-  </div>
-
-  <!-- SMOOTH SCROLL WRAPPER -->
-  <div id="smooth-wrapper">
-    <div id="smooth-content">
-      <main id="main-content">
-
-        <!-- CONTINUOUS SVG THREAD LINE (absolute, spans full content height) -->
-        <svg id="svg-thread" aria-hidden="true" focusable="false">
-          <path id="thread-path" d="M1,0 C1,200 1,400 1,600 C1,800 1,1000 1,1200 C1,1400 1,1600 1,1800 C1,2000 1,2200 1,2400 C1,2600 1,2800 1,3000 C1,3200 1,3400 1,3600 C1,3800 1,4000 1,4200"/>
-        </svg>
-
-        <!-- ==========================================
-             SCENE 1: HERO
-        ========================================== -->
-        <div class="scene" id="scene-hero">
-          <div class="scene-sticky hero-sticky" role="banner">
-            <div class="hero-bg" id="hero-bg">
-              <img
-                src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=1800&auto=format&fit=crop&q=80"
-                alt="Luz cálida en espacio de clínica estética"
-                loading="eager"
-                fetchpriority="high"
-              >
-            </div>
-            <div class="hero-overlay"></div>
-
-            <div class="hero-content">
-              <p class="hero-eyebrow" id="hero-eyebrow">CIRUGÍA PLÁSTICA · SEVILLA</p>
-              <h1 class="hero-headline" id="hero-headline" aria-label="Cirujano Plástico en Sevilla"></h1>
-              <p class="hero-subtitle" id="hero-subtitle">
-                Más de 20 años de experiencia. Cada paciente es único y así lo tratamos. Apostamos por la naturalidad, sacando de cada paciente su mejor versión.
-              </p>
-              <div class="hero-cta-group" id="hero-cta-group">
-                <a href="#scene-cta" class="btn-primary">Quiero una cita</a>
-                <a href="#scene-philosophy" class="btn-ghost">Conoce a la Dra. Durbán</a>
-              </div>
-            </div>
-
-            <div class="hero-scroll-hint" id="hero-scroll-hint" aria-hidden="true">
-              <span>Descubrir</span>
-              <div class="hero-scroll-bar"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==========================================
-             SCENE 2: PHILOSOPHY
-        ========================================== -->
-        <div class="scene" id="scene-philosophy" aria-label="Filosofía">
-          <div class="scene-sticky philosophy-sticky">
-            <div class="philosophy-bg-number" aria-hidden="true" id="phil-bg-num">20</div>
-            <div class="philosophy-inner">
-              <p class="philosophy-eyebrow" id="phil-eyebrow">NUESTRA FILOSOFÍA</p>
-              <blockquote class="philosophy-quote" id="phil-quote" aria-label="Cada paciente es único y así lo tratamos en la consulta de Sevilla. Apostamos por la naturalidad, sacando de cada paciente su mejor versión. Nuestro lema: Con Cabeza y Corazón"></blockquote>
-              <div class="philosophy-stats" id="phil-stats">
-                <div class="stat-item">
-                  <div class="stat-number" data-target="20" data-prefix="+" data-suffix=" años" id="stat-0">+20 años</div>
-                  <p class="stat-label">De experiencia</p>
-                </div>
-                <div class="stat-divider" aria-hidden="true"></div>
-                <div class="stat-item">
-                  <div class="stat-number" data-target="800" data-prefix="+" data-suffix="" id="stat-1">+800</div>
-                  <p class="stat-label">Intervenciones</p>
-                </div>
-                <div class="stat-divider" aria-hidden="true"></div>
-                <div class="stat-item">
-                  <div class="stat-number" data-target="14186" data-prefix="" data-suffix="" id="stat-2">14.186</div>
-                  <p class="stat-label">Nº Colegiado</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==========================================
-             SCENE 3a: ROSTRO
-        ========================================== -->
-        <div class="scene service-scene" id="scene-rostro" aria-label="Tratamientos de Rostro">
-          <div class="scene-sticky service-sticky">
-            <!-- Visual side -->
-            <div class="service-visual">
-              <div class="service-bg-img" id="rostro-bg">
-                <img
-                  src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=1400&auto=format&fit=crop&q=80"
-                  alt="Retrato femenino con luz cálida dorada"
-                  loading="lazy"
-                >
-              </div>
-              <div class="service-img-overlay"></div>
-              <!-- Face silhouette SVG -->
-              <div class="service-silhouette" id="rostro-silhouette" aria-hidden="true">
-                <svg width="180" height="280" viewBox="0 0 180 280">
-                  <path id="rostro-path" d="
-                    M90,20 C120,20 148,45 152,80
-                    C156,115 148,148 138,170
-                    C132,182 128,192 130,205
-                    C132,215 138,222 138,230
-                    C138,240 128,248 118,252
-                    C110,255 100,255 90,254
-                    C80,255 70,255 62,252
-                    C52,248 42,240 42,230
-                    C42,222 48,215 50,205
-                    C52,192 48,182 42,170
-                    C32,148 24,115 28,80
-                    C32,45 60,20 90,20 Z
-                    M65,95 C62,92 58,92 56,95 C54,98 56,102 60,103
-                    M115,95 C118,92 122,92 124,95 C126,98 124,102 120,103
-                    M90,120 C86,125 84,132 90,135 C96,132 94,125 90,120 Z
-                    M76,155 C80,163 85,168 90,168 C95,168 100,163 104,155
-                  " stroke-dasharray="1200" stroke-dashoffset="1200"/>
-                </svg>
-              </div>
-            </div>
-            <!-- Text side -->
-            <div class="service-text-side">
-              <div class="service-number" aria-hidden="true">01</div>
-              <p class="service-eyebrow" id="rostro-eyebrow">CIRUGÍA FACIAL</p>
-              <h2 class="service-title" id="rostro-title" aria-label="Rostro"></h2>
-              <p class="service-desc" id="rostro-desc">
-                Armonía facial mediante técnicas avanzadas. Rinoplastia ultrasónica, blefaroplastia y otoplastia con resultados naturales que respetan la expresión única de cada paciente.
-              </p>
-              <div class="service-tags" id="rostro-tags">
-                <span class="tag">Rinoplastia</span>
-                <span class="tag">Blefaroplastia</span>
-                <span class="tag">Otoplastia</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==========================================
-             SCENE 3b: SILUETA
-        ========================================== -->
-        <div class="scene service-scene" id="scene-silueta" aria-label="Tratamientos de Silueta">
-          <div class="scene-sticky service-sticky">
-            <div class="service-visual">
-              <div class="service-bg-img" id="silueta-bg">
-                <img
-                  src="https://images.unsplash.com/photo-1607748862156-7c548e7e98f4?w=1400&auto=format&fit=crop&q=80"
-                  alt="Silueta elegante con luz difusa cálida"
-                  loading="lazy"
-                >
-              </div>
-              <div class="service-img-overlay"></div>
-              <!-- Body silhouette SVG -->
-              <div class="service-silhouette" id="silueta-silhouette" aria-hidden="true">
-                <svg width="140" height="340" viewBox="0 0 140 340">
-                  <path id="silueta-path" d="
-                    M70,8 C82,8 92,18 92,32 C92,46 82,56 70,56 C58,56 48,46 48,32 C48,18 58,8 70,8 Z
-                    M56,60 C44,66 36,78 36,95
-                    L34,160 L28,230
-                    C26,238 30,244 38,244
-                    C42,244 45,240 46,236
-                    L52,175 L56,165
-                    L64,165 L64,240
-                    C64,248 68,252 72,252
-                    C76,252 78,248 78,240
-                    L78,165 L84,165 L88,175
-                    L94,236 C95,240 98,244 102,244
-                    C110,244 114,238 112,230
-                    L106,160 L104,95
-                    C104,78 96,66 84,60
-                    C78,57 62,57 56,60 Z
-                    M70,56 L70,70
-                  " stroke-dasharray="1400" stroke-dashoffset="1400"/>
-                </svg>
-              </div>
-            </div>
-            <div class="service-text-side">
-              <div class="service-number" aria-hidden="true">02</div>
-              <p class="service-eyebrow" id="silueta-eyebrow">CIRUGÍA CORPORAL</p>
-              <h2 class="service-title" id="silueta-title" aria-label="Silueta"></h2>
-              <p class="service-desc" id="silueta-desc">
-                Rediseño corporal con precisión quirúrgica y recuperación optimizada. Todas las intervenciones con anestesia local con sedación en el Hospital Vithas Sevilla.
-              </p>
-              <div class="service-tags" id="silueta-tags">
-                <span class="tag">Abdominoplastia</span>
-                <span class="tag">Aumento de pecho</span>
-                <span class="tag">Reducción de pecho</span>
-                <span class="tag">Mamas tuberosas</span>
-                <span class="tag">Liposucción</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==========================================
-             SCENE 3c: PIEL
-        ========================================== -->
-        <div class="scene service-scene" id="scene-piel" aria-label="Tratamientos de Piel">
-          <div class="scene-sticky service-sticky">
-            <div class="service-visual">
-              <div class="service-bg-img" id="piel-bg">
-                <img
-                  src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=1400&auto=format&fit=crop&q=80"
-                  alt="Detalle de piel con tratamiento estético suave"
-                  loading="lazy"
-                >
-              </div>
-              <div class="service-img-overlay"></div>
-              <!-- Abstract skin curves SVG -->
-              <div class="service-silhouette" id="piel-silhouette" aria-hidden="true">
-                <svg width="200" height="260" viewBox="0 0 200 260">
-                  <path id="piel-path" d="
-                    M20,130 C40,80 80,50 100,40
-                    C120,30 160,40 180,70
-                    C195,95 185,130 170,155
-                    C150,185 120,200 100,210
-                    C75,222 45,215 30,195
-                    C12,172 10,150 20,130 Z
-                    M60,130 C75,100 100,88 120,95
-                    C142,103 150,125 142,145
-                    C132,168 108,175 90,168
-                    C70,160 50,155 60,130 Z
-                    M100,40 C100,40 95,15 110,8 C125,1 140,15 140,35
-                  " stroke-dasharray="1000" stroke-dashoffset="1000"/>
-                </svg>
-              </div>
-            </div>
-            <div class="service-text-side">
-              <div class="service-number" aria-hidden="true">03</div>
-              <p class="service-eyebrow" id="piel-eyebrow">MEDICINA ESTÉTICA</p>
-              <h2 class="service-title" id="piel-title" aria-label="Piel"></h2>
-              <p class="service-desc" id="piel-desc">
-                Medicina estética preventiva y regenerativa para mantener la luminosidad y firmeza natural de la piel. Protocolos personalizados de última generación.
-              </p>
-              <div class="service-tags" id="piel-tags">
-                <span class="tag">Ácido hialurónico</span>
-                <span class="tag">Toxina botulínica</span>
-                <span class="tag">Mesoterapia</span>
-                <span class="tag">Radiofrecuencia</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==========================================
-             SCENE 4: TESTIMONIAL
-        ========================================== -->
-        <div class="scene" id="scene-testimonial" aria-label="Testimonios">
-          <div class="scene-sticky testimonial-sticky">
-            <div class="testimonial-bg-quote" aria-hidden="true" id="test-bg-quote">&ldquo;</div>
-            <div class="testimonial-inner">
-              <div class="testimonial-svg-mark" id="test-svg-mark" aria-hidden="true">
-                <svg width="48" height="36" viewBox="0 0 48 36">
-                  <path id="test-mark-path" d="M0,36 L0,20 C0,8.9 8.9,0 20,0 L24,0 L20,12 L12,12 L12,36 Z M24,36 L24,20 C24,8.9 32.9,0 44,0 L48,0 L44,12 L36,12 L36,36 Z"/>
-                </svg>
-              </div>
-              <blockquote class="testimonial-quote" id="test-quote" aria-label="La Dra. Durbán no solo transformó mi apariencia; transformó la forma en que me veo a mí misma. Su precisión técnica es solo comparable a su sensibilidad humana."></blockquote>
-              <footer class="testimonial-author" id="test-author" aria-label="M.R. — Paciente, Sevilla 2024">
-                M.R. &mdash; PACIENTE, SEVILLA 2024
-              </footer>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==========================================
-             SCENE 5: TRUST
-        ========================================== -->
-        <div class="scene" id="scene-trust" aria-label="Credenciales y confianza">
-          <div class="scene-sticky trust-sticky">
-            <div class="trust-header" id="trust-header">
-              <p class="trust-eyebrow">CONFIANZA Y EXCELENCIA</p>
-              <h2 class="trust-headline">Avalada por las principales instituciones</h2>
-            </div>
-
-            <div class="trust-badges" role="list">
-              <div class="trust-badge" id="badge-0" role="listitem">
-                <div class="trust-badge-ring">
-                  <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                    <circle cx="16" cy="16" r="12"/>
-                    <path d="M16,8 L17.8,13.2 L23.4,13.2 L18.8,16.8 L20.6,22 L16,18.4 L11.4,22 L13.2,16.8 L8.6,13.2 L14.2,13.2 Z"/>
-                  </svg>
-                </div>
-                <span class="trust-badge-name">SECPRE</span>
-              </div>
-              <div class="trust-badge" id="badge-1" role="listitem">
-                <div class="trust-badge-ring">
-                  <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                    <path d="M16,4 C16,4 6,9 6,17 C6,22.5 10.5,27 16,27 C21.5,27 26,22.5 26,17 C26,9 16,4 16,4 Z"/>
-                    <path d="M16,11 L16,21 M11,16 L21,16"/>
-                  </svg>
-                </div>
-                <span class="trust-badge-name">SACPRE</span>
-              </div>
-              <div class="trust-badge" id="badge-2" role="listitem">
-                <div class="trust-badge-ring">
-                  <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                    <rect x="6" y="6" width="20" height="20" rx="2"/>
-                    <path d="M11,16 L14,19 L21,12"/>
-                  </svg>
-                </div>
-                <span class="trust-badge-name">AECEP</span>
-              </div>
-              <div class="trust-badge" id="badge-3" role="listitem">
-                <div class="trust-badge-ring">
-                  <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                    <path d="M8,28 L8,12 C8,10 10,8 12,8 L20,8 C22,8 24,10 24,12 L24,28"/>
-                    <path d="M4,28 L28,28"/>
-                    <path d="M13,8 L13,4 L19,4 L19,8"/>
-                    <rect x="12" y="16" width="4" height="5"/>
-                  </svg>
-                </div>
-                <span class="trust-badge-name">Hospital Vithas</span>
-              </div>
-              <div class="trust-badge" id="badge-4" role="listitem">
-                <div class="trust-badge-ring">
-                  <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                    <path d="M16,6 L20,13 L28,14 L22,20 L23.5,28 L16,24.5 L8.5,28 L10,20 L4,14 L12,13 Z"/>
-                  </svg>
-                </div>
-                <span class="trust-badge-name">Colegio de Médicos</span>
-              </div>
-            </div>
-
-            <p class="trust-colegiado" id="trust-colegiado">
-              Nº Colegiado 14.186 · Colegio de Médicos de Sevilla
-            </p>
-          </div>
-        </div>
-
-        <!-- ==========================================
-             SCENE 6: CTA
-        ========================================== -->
-        <section id="scene-cta" class="cta-section" aria-label="Reservar consulta">
-          <p class="cta-eyebrow">El primer paso</p>
-          <h2 class="cta-headline">¿Comenzamos tu<br><em>transformación?</em></h2>
-          <p class="cta-sub">
-            Reserva tu primera consulta y descubre cómo podemos ayudarte. Consultas presenciales en Sevilla y consulta online para pacientes de fuera.
-          </p>
-          <div class="cta-actions">
-            <a href="tel:+34696872067" class="btn-cta-primary">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.16 12 19.79 19.79 0 0 1 1.09 3.41 2 2 0 0 1 3.07 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16z"/>
-              </svg>
-              Reservar consulta
-            </a>
-            <a href="mailto:info@doctoradurban.com" class="btn-cta-ghost">Consulta online</a>
-          </div>
-        </section>
-
-        <!-- ==========================================
-             FOOTER
-        ========================================== -->
-        <footer role="contentinfo">
-          <div class="footer-grid">
-            <div class="footer-brand">
-              <a href="#" class="footer-logo">Dra. Durbán</a>
-              <p>Cirugía Plástica y Estética<br>Con Cabeza y Corazón</p>
-              <p style="margin-top:1rem;">Hospital Vithas Sevilla Aljarafe<br>Sevilla (España)</p>
-              <div style="display:flex;gap:1rem;margin-top:1.25rem;">
-                <a href="https://youtube.com/user/DoctoraDurban" target="_blank" rel="noopener" aria-label="YouTube" style="color:rgba(254,254,254,0.35);transition:color 0.2s;text-decoration:none;">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.96-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
-                </a>
-                <a href="https://facebook.com/DraDurban" target="_blank" rel="noopener" aria-label="Facebook" style="color:rgba(254,254,254,0.35);transition:color 0.2s;text-decoration:none;">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-                </a>
-                <a href="https://instagram.com/dradurban" target="_blank" rel="noopener" aria-label="Instagram" style="color:rgba(254,254,254,0.35);transition:color 0.2s;text-decoration:none;">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-                </a>
-                <a href="https://linkedin.com/in/doctoradurban" target="_blank" rel="noopener" aria-label="LinkedIn" style="color:rgba(254,254,254,0.35);transition:color 0.2s;text-decoration:none;">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-                </a>
-              </div>
-            </div>
-            <div class="footer-col">
-              <h4>Cirugía facial</h4>
-              <ul>
-                <li><a href="#scene-rostro">Rinoplastia</a></li>
-                <li><a href="#scene-rostro">Blefaroplastia</a></li>
-                <li><a href="#scene-rostro">Otoplastia</a></li>
-              </ul>
-            </div>
-            <div class="footer-col">
-              <h4>Cirugía corporal</h4>
-              <ul>
-                <li><a href="#scene-silueta">Abdominoplastia</a></li>
-                <li><a href="#scene-silueta">Aumento de pecho</a></li>
-                <li><a href="#scene-silueta">Reducción de pecho</a></li>
-                <li><a href="#scene-silueta">Mamas tuberosas</a></li>
-                <li><a href="#scene-silueta">Liposucción</a></li>
-              </ul>
-            </div>
-            <div class="footer-col">
-              <h4>Contacto</h4>
-              <ul>
-                <li><a href="tel:+34696872067">(+34) 696 872 067</a></li>
-                <li><a href="mailto:info@doctoradurban.com">info@doctoradurban.com</a></li>
-                <li><a href="#">Sevilla (España)</a></li>
-                <li><a href="#">Hospital Vithas Sevilla</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="footer-bottom">
-            <p>&copy; 2026 Dra. Isabel Durbán · Cirugía Plástica en Sevilla</p>
-            <p style="font-family:'Raleway',sans-serif;font-size:0.7rem;color:rgba(254,254,254,0.2);letter-spacing:0.08em;">
-              Colegio de Médicos Sevilla &middot; SACPRE &middot; AECEP &middot; Vithas &middot; SECPRE
-            </p>
-            <p>
-              <a href="#" style="color:rgba(254,254,254,0.25);text-decoration:none;transition:color 0.2s;font-family:'Raleway',sans-serif;font-size:0.72rem;">Aviso legal</a>
-              &nbsp;&middot;&nbsp;
-              <a href="#" style="color:rgba(254,254,254,0.25);text-decoration:none;transition:color 0.2s;font-family:'Raleway',sans-serif;font-size:0.72rem;">Política de cookies</a>
-              &nbsp;&middot;&nbsp;
-              <a href="#" style="color:rgba(254,254,254,0.25);text-decoration:none;transition:color 0.2s;font-family:'Raleway',sans-serif;font-size:0.72rem;">Política de privacidad</a>
-            </p>
-          </div>
-        </footer>
-
-      </main>
-    </div><!-- #smooth-content -->
-  </div><!-- #smooth-wrapper -->
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script>
-  /* ============================================================
-     UTILITY: subRange — clamp progress to sub-window
-  ============================================================ */
-  function subRange(p, start, end) {
-    return Math.max(0, Math.min(1, (p - start) / (end - start)));
-  }
+    window.addEventListener('load', function () {
+      var line = document.getElementById('line');
 
-  function lerp(a, b, t) { return a + (b - a) * t; }
-  function clamp01(v) { return Math.max(0, Math.min(1, v)); }
+      var brandText = document.getElementById('brand-text');
 
-  /* ============================================================
-     DETECT: reduced motion, touch
-  ============================================================ */
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isMobile = () => window.innerWidth <= 900;
-  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      // Precargar recursos reales (fotos, fonts) y ligar progreso a la línea
+      var resources = [
+        'background-1.png',
+        'background-1.png',
+        'background-1.png', // duplicada para simular más carga
+        'background-1.png',
+        'background-1.png',
+        'background-1.png',
+        'background-1.png'
+      ];
 
-  /* ============================================================
-     SMOOTH SCROLL SYSTEM
-  ============================================================ */
-  let smoothCurrent = 0;
-  let smoothTarget = 0;
-  const EASE = 0.095;
-  const smoothWrapper = document.getElementById('smooth-wrapper');
-  const smoothContent = document.getElementById('smooth-content');
+      var loaded = 0;
+      var total = resources.length;
+      var targetHeight = 25; // vh — fase 1 llega hasta 25vh (mitad del recorrido total)
 
-  function initSmoothScroll() {
-    // DISABLED: smooth scroll via transform breaks position:sticky.
-    // Using native scroll on ALL devices. Sticky pinning now works correctly.
-    // Keep smoothCurrent synced with scrollY for progress calculations.
-    smoothWrapper.style.position = 'static';
-    smoothWrapper.style.height = 'auto';
-    smoothWrapper.style.overflow = 'visible';
+      // Fase 1: la línea sube de 0 a 25vh en ~3s simulando carga de 1.2MB
+      // La carga real de fotos ocurre en paralelo pero la línea avanza a ritmo de red real
+      var MIN_LOAD_TIME = 3000; // ms — tiempo mínimo que dura la fase 1
+      var startTime = Date.now();
+      var allLoaded = false;
 
-    function syncScroll() {
-      smoothCurrent = window.scrollY;
-      requestAnimationFrame(syncScroll);
-    }
-    syncScroll();
-  }
-
-  // On mobile: normal scroll
-  function initMobileScroll() {
-    if (!isMobile()) return;
-    smoothWrapper.style.position = 'static';
-    smoothWrapper.style.height = 'auto';
-    smoothWrapper.style.overflow = 'visible';
-    document.body.style.height = '';
-  }
-
-  /* ============================================================
-     GET SCROLL PROGRESS FOR A SCENE
-     Returns 0-1 as scene passes from entry to exit
-  ============================================================ */
-  function getSceneProgress(el) {
-    // Native scroll on all devices — sticky works correctly.
-    // p=0 when scene top reaches viewport top (sticky child pins)
-    // p=1 when scene top has scrolled up by (sceneHeight - windowHeight)
-    const scrollY = window.scrollY;
-    const absTop = getAbsoluteTop(el);
-    const scrollableHeight = el.offsetHeight - window.innerHeight;
-    if (scrollableHeight <= 0) return 0;
-    return clamp01((scrollY - absTop) / scrollableHeight);
-  }
-
-  function getAbsoluteTop(el) {
-    let top = 0;
-    while (el) { top += el.offsetTop; el = el.offsetParent; }
-    return top;
-  }
-
-  /* ============================================================
-     LETTER-BY-LETTER REVEAL (scroll-driven)
-  ============================================================ */
-  function wrapChars(el, text, useCSS) {
-    el.innerHTML = '';
-    let charIdx = 0;
-    [...text].forEach(ch => {
-      if (ch === ' ') {
-        const sp = document.createElement('span');
-        sp.className = 'char space';
-        sp.textContent = ' ';
-        el.appendChild(sp);
-      } else {
-        const span = document.createElement('span');
-        span.className = 'char';
-        span.textContent = ch;
-        if (useCSS) span.style.setProperty('--char-i', charIdx);
-        el.appendChild(span);
-        charIdx++;
+      function updateProgress() {
+        loaded++;
+        if (loaded >= total) allLoaded = true;
       }
-    });
-    return el.querySelectorAll('.char:not(.space)');
-  }
 
-  function revealCharsOnProgress(chars, p, pStart, pEnd) {
-    const total = chars.length;
-    const localP = subRange(p, pStart, pEnd);
-    chars.forEach((ch, i) => {
-      const threshold = i / total;
-      const charP = clamp01((localP - threshold) / (1.5 / total));
-      ch.style.opacity = charP;
-      ch.style.transform = `translateY(${lerp(40, 0, charP)}px)`;
-    });
-  }
-
-  /* ============================================================
-     SVG DRAWING (stroke-dashoffset)
-  ============================================================ */
-  function drawSVGPath(pathEl, p, pStart, pEnd, totalLength) {
-    const localP = subRange(p, pStart, pEnd);
-    const drawn = totalLength * localP;
-    pathEl.style.strokeDashoffset = totalLength - drawn;
-  }
-
-  /* ============================================================
-     HERO SCENE
-  ============================================================ */
-  const heroScene = document.getElementById('scene-hero');
-  const heroBg = document.getElementById('hero-bg');
-  const heroEyebrow = document.getElementById('hero-eyebrow');
-  const heroHeadline = document.getElementById('hero-headline');
-  const heroSubtitle = document.getElementById('hero-subtitle');
-  const heroCtaGroup = document.getElementById('hero-cta-group');
-  const heroScrollHint = document.getElementById('hero-scroll-hint');
-
-  const HERO_TEXT = 'Cirujano Plástico en Sevilla';
-  const heroChars = wrapChars(heroHeadline, HERO_TEXT, true); // true = CSS animation, not scroll-driven
-
-  let heroInitialized = false;
-
-  function initHeroEntry() {
-    if (heroInitialized) return;
-    heroInitialized = true;
-    // Eyebrow
-    setTimeout(() => heroEyebrow.classList.add('reveal'), 400);
-    setTimeout(() => heroScrollHint.classList.add('reveal'), 1800);
-  }
-
-  function updateHero(p) {
-    // BG: always visible, gentle zoom on scroll, fade at end of scene
-    const bgZoom = 1 + p * 0.15;
-    const bgFade = 1 - subRange(p, 0.75, 1.0);
-    heroBg.style.opacity = bgFade;
-    heroBg.style.transform = `scale(${bgZoom})`;
-
-    // Hero content (text, CTA) is animated with CSS keyframes on load.
-    // Scroll only controls the fade-out at end of scene.
-    const contentFade = 1 - subRange(p, 0.70, 0.95);
-    heroCtaGroup.closest('.hero-content').style.opacity = contentFade;
-  }
-
-  /* ============================================================
-     PHILOSOPHY SCENE
-  ============================================================ */
-  const philScene = document.getElementById('scene-philosophy');
-  const philEyebrow = document.getElementById('phil-eyebrow');
-  const philQuote = document.getElementById('phil-quote');
-  const philStats = document.getElementById('phil-stats');
-  const philBgNum = document.getElementById('phil-bg-num');
-
-  const PHIL_TEXT = 'Cada paciente es único y así lo tratamos en la consulta de Sevilla. Apostamos por la naturalidad, sacando de cada paciente su mejor versión. Nuestro lema: Con Cabeza y Corazón';
-  const philChars = wrapChars(philQuote, PHIL_TEXT, false); // scroll-driven, not CSS
-  let statsAnimated = false;
-
-  function updatePhilosophy(p) {
-    // Philosophy quote: scroll-driven char reveal (long text = CSS delays too slow)
-    revealCharsOnProgress(philChars, p, 0.0, 0.25);
-
-    // Eyebrow + stats: CSS .in-view handles these (short elements, fast animation)
-
-    // Trigger counter
-    if (p > 0.1 && !statsAnimated) {
-      statsAnimated = true;
-      animateCounters();
-    }
-
-    // Decorative number parallax
-    const numShift = subRange(p, 0, 1) * 60;
-    philBgNum.style.transform = `translateY(calc(-50% + ${numShift}px))`;
-  }
-
-  function animateCounters() {
-    const duration = 1800;
-    const start = performance.now();
-    const counters = [
-      { el: document.getElementById('stat-0'), target: 20, prefix: '+', suffix: ' años' },
-      { el: document.getElementById('stat-1'), target: 800, prefix: '+', suffix: '' },
-      { el: document.getElementById('stat-2'), target: 14186, prefix: '', suffix: '', format: true }
-    ];
-    function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
-    function step(now) {
-      const t = easeOutCubic(Math.min((now - start) / duration, 1));
-      counters.forEach(c => {
-        const val = Math.round(c.target * t);
-        const formatted = c.format ? val.toLocaleString('es-ES') : val;
-        c.el.textContent = c.prefix + formatted + c.suffix;
-      });
-      if (t < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-
-  /* ============================================================
-     SERVICE SCENE FACTORY
-  ============================================================ */
-  function createServiceScene(config) {
-    const {
-      sceneId, bgId, eyebrowId, titleId, titleText,
-      descId, tagsId, silhouetteId, pathId, pathLength
-    } = config;
-
-    const scene = document.getElementById(sceneId);
-    const bg = document.getElementById(bgId);
-    const eyebrow = document.getElementById(eyebrowId);
-    const title = document.getElementById(titleId);
-    const desc = document.getElementById(descId);
-    const tags = document.getElementById(tagsId);
-    const silhouette = document.getElementById(silhouetteId);
-    const svgPath = document.getElementById(pathId);
-
-    if (svgPath) {
-      svgPath.style.strokeDasharray = pathLength;
-      svgPath.style.strokeDashoffset = pathLength;
-    }
-
-    const titleChars = wrapChars(title, titleText, true);
-
-    return function update(p) {
-      // Text reveals are CSS-driven via .in-view class
-      // JS only handles: image zoom + SVG silhouette draw
-      const zoom = 1 + p * 0.08;
-      bg.style.transform = `scale(${zoom})`;
-
-      // Silhouette fade + SVG draw (subtle, decorative)
-      const silOp = clamp01(p * 3);
-      silhouette.style.opacity = Math.min(silOp, 0.7);
-
-      if (svgPath) {
-        const drawn = clamp01(p * 2) * pathLength;
-        svgPath.style.strokeDashoffset = pathLength - drawn;
-      }
-    };
-  }
-
-  const updateRostro = createServiceScene({
-    sceneId: 'scene-rostro', bgId: 'rostro-bg',
-    eyebrowId: 'rostro-eyebrow', titleId: 'rostro-title', titleText: 'Rostro',
-    descId: 'rostro-desc', tagsId: 'rostro-tags',
-    silhouetteId: 'rostro-silhouette', pathId: 'rostro-path', pathLength: 1200
-  });
-
-  const updateSilueta = createServiceScene({
-    sceneId: 'scene-silueta', bgId: 'silueta-bg',
-    eyebrowId: 'silueta-eyebrow', titleId: 'silueta-title', titleText: 'Silueta',
-    descId: 'silueta-desc', tagsId: 'silueta-tags',
-    silhouetteId: 'silueta-silhouette', pathId: 'silueta-path', pathLength: 1400
-  });
-
-  const updatePiel = createServiceScene({
-    sceneId: 'scene-piel', bgId: 'piel-bg',
-    eyebrowId: 'piel-eyebrow', titleId: 'piel-title', titleText: 'Piel',
-    descId: 'piel-desc', tagsId: 'piel-tags',
-    silhouetteId: 'piel-silhouette', pathId: 'piel-path', pathLength: 1000
-  });
-
-  /* ============================================================
-     TESTIMONIAL SCENE
-  ============================================================ */
-  const testScene = document.getElementById('scene-testimonial');
-  const testSvgMark = document.getElementById('test-svg-mark');
-  const testMarkPath = document.getElementById('test-mark-path');
-  const testQuote = document.getElementById('test-quote');
-  const testAuthor = document.getElementById('test-author');
-  const testBgQuote = document.getElementById('test-bg-quote');
-
-  const TEST_TEXT = 'La Dra. Durbán no solo transformó mi apariencia; transformó la forma en que me veo a mí misma. Su precisión técnica es solo comparable a su sensibilidad humana.';
-  const testChars = wrapChars(testQuote, TEST_TEXT, false); // scroll-driven, not CSS
-  testMarkPath.style.strokeDasharray = 200;
-  testMarkPath.style.strokeDashoffset = 200;
-
-  function updateTestimonial(p) {
-    // Testimonial quote: scroll-driven char reveal (long text)
-    revealCharsOnProgress(testChars, p, 0.0, 0.25);
-
-    // Author: show after quote is mostly revealed
-    const authP = subRange(p, 0.20, 0.30);
-    testAuthor.style.opacity = authP;
-    testAuthor.style.transform = `translateY(${lerp(10, 0, authP)}px)`;
-
-    // SVG quote mark draw
-    const markDraw = clamp01(p * 4) * 200;
-    testMarkPath.style.strokeDashoffset = 200 - markDraw;
-
-    // Decorative quote mark parallax
-    const qShift = subRange(p, 0, 1) * 40;
-    testBgQuote.style.transform = `translateY(${qShift}px)`;
-  }
-
-  /* ============================================================
-     TRUST SCENE
-  ============================================================ */
-  const trustScene = document.getElementById('scene-trust');
-  const trustHeader = document.getElementById('trust-header');
-  const trustColegiado = document.getElementById('trust-colegiado');
-
-  // Scattered starting positions for fly-in
-  const badgeOffsets = [
-    { dx: -80, dy: -60 },
-    { dx: 60, dy: -80 },
-    { dx: -50, dy: 70 },
-    { dx: 90, dy: 50 },
-    { dx: -30, dy: -90 }
-  ];
-
-  function updateTrust(p) {
-    // Header reveal is CSS-driven via .in-view
-    // Badges fly-in still scroll-driven for dramatic effect
-    for (let i = 0; i < 5; i++) {
-      const badge = document.getElementById(`badge-${i}`);
-      if (!badge) continue;
-      const staggerStart = 0.02 + i * 0.04;
-      const staggerEnd = staggerStart + 0.15;
-      const bP = subRange(p, staggerStart, staggerEnd);
-      const { dx, dy } = badgeOffsets[i];
-      badge.style.opacity = bP;
-      badge.style.transform = `translate(${lerp(dx, 0, bP)}px, ${lerp(dy, 0, bP)}px)`;
-    }
-
-    // Colegiado: 0.75-0.92
-    const colP = subRange(p, 0.75, 0.92);
-    trustColegiado.style.opacity = colP;
-  }
-
-  /* ============================================================
-     LATERAL TIMELINE
-  ============================================================ */
-  const tlItems = document.querySelectorAll('.tl-item');
-  const tlLineSegs = document.querySelectorAll('.tl-line-seg');
-
-  const SECTIONS = ['hero', 'philosophy', 'rostro', 'silueta', 'piel', 'testimonial', 'trust'];
-
-  function updateTimeline(activeSection) {
-    let activeIdx = SECTIONS.indexOf(activeSection);
-    if (activeIdx < 0) activeIdx = 0;
-
-    tlItems.forEach((item, i) => {
-      item.classList.toggle('active', i === activeIdx);
-    });
-    tlLineSegs.forEach((seg, i) => {
-      seg.classList.toggle('filled', i < activeIdx);
-    });
-  }
-
-  /* ============================================================
-     SVG THREAD (continuous line that draws with scroll)
-  ============================================================ */
-  const svgThread = document.getElementById('svg-thread');
-  const threadPath = document.getElementById('thread-path');
-
-  function initSVGThread() {
-    // Will be sized after content is ready
-    requestAnimationFrame(sizeSVGThread);
-  }
-
-  function sizeSVGThread() {
-    const totalH = smoothContent.scrollHeight;
-    svgThread.style.height = totalH + 'px';
-
-    // Build a gently curved path down the full height
-    const mid = 1;
-    let d = `M${mid},0 `;
-    const segments = 20;
-    for (let i = 0; i <= segments; i++) {
-      const y = (totalH / segments) * i;
-      const wave = i % 2 === 0 ? 3 : -3;
-      d += `L${mid + wave},${y} `;
-    }
-    threadPath.setAttribute('d', d.trim());
-
-    // Measure total path length
-    const len = threadPath.getTotalLength();
-    threadPath.style.strokeDasharray = len;
-    threadPath.style.strokeDashoffset = len;
-    svgThread._pathLen = len;
-  }
-
-  function updateSVGThread(scrollFraction) {
-    const len = svgThread._pathLen;
-    if (!len) return;
-    const drawn = len * scrollFraction;
-    threadPath.style.strokeDashoffset = len - drawn;
-  }
-
-  /* ============================================================
-     MAIN ANIMATION LOOP (IntersectionObserver + rAF)
-  ============================================================ */
-  const sceneDefs = [
-    { el: document.getElementById('scene-hero'),        fn: updateHero,        section: 'hero' },
-    { el: document.getElementById('scene-philosophy'),  fn: updatePhilosophy,  section: 'philosophy' },
-    { el: document.getElementById('scene-rostro'),      fn: updateRostro,      section: 'rostro' },
-    { el: document.getElementById('scene-silueta'),     fn: updateSilueta,     section: 'silueta' },
-    { el: document.getElementById('scene-piel'),        fn: updatePiel,        section: 'piel' },
-    { el: document.getElementById('scene-testimonial'), fn: updateTestimonial, section: 'testimonial' },
-    { el: document.getElementById('scene-trust'),       fn: updateTrust,       section: 'trust' },
-  ];
-
-  function getEffectiveScrollY() {
-    return isMobile() ? window.scrollY : smoothCurrent;
-  }
-
-  // Check if a scene is "in view" by calculating its position vs smoothCurrent
-  // This replaces IntersectionObserver which doesn't work with transform-based smooth scroll
-  function isSceneInView(el) {
-    // Native scroll: use getBoundingClientRect (reliable without transform wrapper)
-    const rect = el.getBoundingClientRect();
-    return rect.bottom > 0 && rect.top < window.innerHeight;
-  }
-
-  function mainLoop() {
-    const sy = getEffectiveScrollY();
-    const totalScrollable = document.body.scrollHeight - window.innerHeight;
-    const globalFraction = totalScrollable > 0 ? sy / totalScrollable : 0;
-
-    // Thread
-    updateSVGThread(globalFraction);
-
-    // Active section tracking
-    let activeSection = 'hero';
-    let maxProgress = -1;
-
-    // Update each scene that is in view (no IntersectionObserver — direct calculation)
-    sceneDefs.forEach(def => {
-      if (!def.el) return;
-      if (!isSceneInView(def.el)) return;
-      const p = getSceneProgress(def.el);
-      def.fn(p);
-      if (p > 0.05 && p > maxProgress) {
-        maxProgress = p;
-        activeSection = def.section;
-      }
-    });
-
-    // Belt-and-suspenders: force .in-view on visible sticky elements
-    sceneDefs.forEach(def => {
-      if (!def.el) return;
-      if (isSceneInView(def.el)) {
-        const sticky = def.el.querySelector('.scene-sticky');
-        if (sticky && !sticky.classList.contains('in-view')) {
-          sticky.classList.add('in-view');
-        }
-      }
-    });
-
-    updateTimeline(activeSection);
-    requestAnimationFrame(mainLoop);
-  }
-
-  /* ============================================================
-     MOBILE: IntersectionObserver fade-ins (fallback)
-  ============================================================ */
-  function initMobileFadeIns() {
-    if (!isMobile() && !prefersReduced) return;
-
-    // Force-reveal all chars immediately on mobile / reduced motion
-    document.querySelectorAll('.char').forEach(c => {
-      c.style.opacity = 1;
-      c.style.transform = 'none';
-    });
-    // Force-reveal all other animated elements
-    [
-      heroEyebrow, heroSubtitle, heroCtaGroup, heroScrollHint,
-      philEyebrow, philStats,
-      document.getElementById('rostro-eyebrow'),
-      document.getElementById('silueta-eyebrow'),
-      document.getElementById('piel-eyebrow'),
-    ].forEach(el => {
-      if (el) {
-        el.style.opacity = 1;
-        el.style.transform = 'none';
-      }
-    });
-    heroBg.style.opacity = 1;
-
-    // IntersectionObserver for mobile fade-ins
-    const mobileIo = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.style.opacity = 1;
-          e.target.style.transform = 'none';
-          mobileIo.unobserve(e.target);
+      // Animar la línea suavemente durante MIN_LOAD_TIME
+      gsap.to(line, {
+        height: targetHeight + 'vh',
+        duration: MIN_LOAD_TIME / 1000,
+        ease: 'power2.in', // de menos a más velocidad
+        onComplete: function () {
+          // Si los recursos aún no han cargado, esperar
+          if (!allLoaded) {
+            var checkInterval = setInterval(function () {
+              if (allLoaded) {
+                clearInterval(checkInterval);
+                triggerTajo();
+              }
+            }, 100);
+          } else {
+            triggerTajo();
+          }
         }
       });
-    }, { threshold: 0.15 });
 
-    document.querySelectorAll(
-      '.service-desc, .service-tags, .testimonial-svg-mark, .testimonial-author, .trust-header, .trust-badge, .trust-colegiado'
-    ).forEach(el => {
-      el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
-      mobileIo.observe(el);
-    });
+      function triggerTajo() {
+        var tajoDuration = 0.25;
 
-    // SVG silhouettes on mobile: draw on viewport enter
-    ['rostro-path', 'silueta-path', 'piel-path', 'test-mark-path'].forEach(id => {
-      const path = document.getElementById(id);
-      if (!path) return;
-      const silIo = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-          if (e.isIntersecting) {
-            path.style.transition = 'stroke-dashoffset 1.4s ease';
-            path.style.strokeDashoffset = 0;
-            silIo.unobserve(e.target);
+        // Tajo + desaparición de texto SIMULTÁNEOS, sin pausa
+        gsap.to(brandText, {
+          opacity: 0,
+          duration: tajoDuration,
+          ease: 'power1.out'
+        });
+
+        var pluma = document.getElementById('pluma');
+
+        // TAJO: de 25vh a 50vh, muy rápido
+        gsap.to(line, {
+          height: 'calc(50vh - 72px)',
+          duration: tajoDuration,
+          ease: 'power4.in',
+          onComplete: function () {
+            // La pluma NACE con glow que se atenúa
+            // La pluma aparece con su color normal
+            gsap.fromTo(pluma,
+              { opacity: 0, scale: 0 },
+              { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(1.7)', delay: 0 }
+            );
+
+            // FOGONAZO: clon de la pluma en blanco puro, escalado grande, que se expande y desaparece
+            var flash = pluma.cloneNode(true);
+            flash.id = 'pluma-flash';
+            flash.style.opacity = '0';
+            flash.style.pointerEvents = 'none';
+            flash.style.zIndex = '5';
+            flash.style.transformOrigin = '50% 50%'; /* expande desde el centro de la pluma, no desde la base */
+            // Hacer todos los paths blancos
+            flash.querySelectorAll('path').forEach(function (p) { p.setAttribute('fill', '#f0d8c8'); });
+            document.body.appendChild(flash);
+
+            // El fogonazo: aparece instantáneo, se expande y se desvanece
+            gsap.fromTo(flash,
+              { opacity: 1, scale: 1, filter: 'blur(0px) drop-shadow(0 0 30px rgba(240,216,200,1)) drop-shadow(0 0 60px rgba(210,178,155,0.8)) drop-shadow(0 0 100px rgba(176,138,114,0.6))' },
+              {
+                opacity: 0, scale: 2.5, filter: 'blur(8px) drop-shadow(0 0 60px rgba(240,216,200,0)) drop-shadow(0 0 100px rgba(210,178,155,0)) drop-shadow(0 0 150px rgba(176,138,114,0))',
+                duration: 0.8, ease: 'power2.out',
+                onComplete: function () { flash.remove(); }
+              }
+            );
+
+            // La línea desaparece
+            gsap.to(line, {
+              clipPath: 'inset(0 0 100% 0)',
+              duration: 0.1,
+              ease: 'power1.inOut',
+              delay: 0.2,
+              onComplete: function () {
+                line.style.display = 'none';
+              }
+            });
+
+            // === CAÍDA DE LA PLUMA ===
+            // Desde donde nació (top:0, left:65%) hasta L (top:40%, left:25%)
+            // Usamos x/y RELATIVOS de GSAP — sin tocar top/left, sin saltos
+            // La punta gira a la DERECHA primero (cae de barriga), luego se endereza
+
+            var fallTl = gsap.timeline({ delay: 0.5 });
+
+            // Distancia a recorrer (relativa desde posición actual)
+            var targetY = window.innerHeight * 0.378; // hasta la altura del texto "Dra. Durban"
+            var targetX = -(window.innerWidth * 0.24); // 5% más cerca
+
+            // Caída orgánica continua — sin fases, sin parones
+            // Un solo proxy de 0→1 con onUpdate que calcula todo frame a frame
+            var proxy = { t: 0 };
+            var FALL_DUR = 3; // segundos
+
+            gsap.to(proxy, {
+              t: 1,
+              duration: FALL_DUR,
+              ease: 'power1.inOut',
+              onUpdate: function() {
+                var t = proxy.t;
+
+                // Y: aceleración suave tipo gravedad con resistencia
+                var yProgress = Math.pow(t, 1.3);
+                var y = targetY * yProgress;
+
+                // X: drift general hacia la izquierda + ondulación sinusoidal
+                var xDrift = targetX * t;
+                var xWave = Math.sin(t * Math.PI * 2.5) * 25 * (1 - t); // ondula más al principio, menos al final
+                var x = xDrift + xWave;
+
+                // Rotación: gira a la derecha al principio, mece, se estabiliza
+                var rotBase = 35 * Math.sin(t * Math.PI); // arco: 0→35→0
+                var rotWobble = 12 * Math.sin(t * Math.PI * 3) * (1 - t); // balanceo amortiguado
+                var rotation = rotBase + rotWobble;
+
+                // Scale: crece suavemente de 1 a 2
+                var scale = 1 + t;
+
+                gsap.set(pluma, { x: x, y: y, rotation: rotation, scale: scale });
+              },
+              onComplete: function() {
+                // === ONDAS + REVEAL cuando la pluma aterriza ===
+                var overlay = document.getElementById('overlay');
+                var wave1 = document.getElementById('wave1');
+                var wave2 = document.getElementById('wave2');
+                var wave3 = document.getElementById('wave3');
+                var wave4 = document.getElementById('wave4');
+                var maxRadius = Math.max(window.innerWidth, window.innerHeight) * 2.5;
+                var revealRadius = { value: 0 };
+
+                function updateOverlayMask() {
+                  var r = revealRadius.value;
+                  if (r <= 0) {
+                    overlay.style.background = '#1a1714';
+                    return;
+                  }
+                  // Borde flat duro — transparent hasta r-2, sólido en r
+                  overlay.style.background = 'radial-gradient(circle ' + r + 'px at 40% 45%, transparent ' + Math.max(0, r - 2) + 'px, #1a1714 ' + r + 'px)';
+                }
+
+                var waveTl = gsap.timeline();
+
+                // Wave 1: anillo warm-rose
+                waveTl.fromTo(wave1,
+                  { width: 0, height: 0, opacity: 0 },
+                  { width: maxRadius * 0.45, height: maxRadius * 0.45, opacity: 0.8, duration: 2, ease: 'power1.out' },
+                  0
+                );
+                waveTl.to(wave1, { opacity: 0, duration: 0.8, ease: 'power2.in' }, 1.4);
+
+                // Wave 2: reveal (abre agujero en el overlay) + anillo
+                waveTl.to(revealRadius, {
+                  value: maxRadius * 0.3,
+                  duration: 2,
+                  ease: 'power1.out',
+                  onUpdate: updateOverlayMask
+                }, 0.5);
+                waveTl.fromTo(wave2,
+                  { width: 0, height: 0, opacity: 0 },
+                  { width: maxRadius * 0.55, height: maxRadius * 0.55, opacity: 0.5, duration: 2, ease: 'power1.out' },
+                  0.5
+                );
+                waveTl.to(wave2, { opacity: 0, duration: 0.8, ease: 'power2.in' }, 1.8);
+
+                // Wave 3: anillo
+                waveTl.fromTo(wave3,
+                  { width: 0, height: 0, opacity: 0 },
+                  { width: maxRadius * 0.7, height: maxRadius * 0.7, opacity: 0.6, duration: 2, ease: 'power1.out' },
+                  1.0
+                );
+                waveTl.to(wave3, { opacity: 0, duration: 0.8, ease: 'power2.in' }, 2.2);
+
+                // Wave 4: más reveal + anillo
+                waveTl.to(revealRadius, {
+                  value: maxRadius * 0.7,
+                  duration: 2,
+                  ease: 'power1.out',
+                  onUpdate: updateOverlayMask
+                }, 1.5);
+                waveTl.fromTo(wave4,
+                  { width: 0, height: 0, opacity: 0 },
+                  { width: maxRadius * 0.9, height: maxRadius * 0.9, opacity: 0.4, duration: 2, ease: 'power1.out' },
+                  1.5
+                );
+                waveTl.to(wave4, { opacity: 0, duration: 0.8, ease: 'power2.in' }, 2.8);
+
+                // Textos aparecen 0.5s después de que empiecen las ondas
+                var landingText = document.getElementById('landing-text');
+                waveTl.to(landingText, { opacity: 1, visibility: 'visible', duration: 1, ease: 'power1.out' }, 0.5);
+
+                // La pluma cambia de color cuando aparece el texto
+                var plumaPaths = pluma.querySelectorAll('path');
+                // SVG mantiene su color original — no cambia después de la caída
+
+                // Reveal final: overlay desaparece completamente
+                waveTl.to(overlay, { opacity: 0, duration: 1.5, ease: 'power2.out' }, 3.0);
+              }
+            });
+
           }
         });
-      }, { threshold: 0.3 });
-      silIo.observe(path.closest('svg') || path);
-    });
-  }
-
-  /* ============================================================
-     NAV: scroll state
-  ============================================================ */
-  const nav = document.querySelector('.nav');
-  function updateNav() {
-    const sy = getEffectiveScrollY();
-    nav.classList.toggle('nav-clear', sy < 60);
-    nav.classList.toggle('nav-solid', sy >= 60);
-  }
-  window.addEventListener('scroll', updateNav, { passive: true });
-
-  /* ============================================================
-     HAMBURGER + MOBILE MENU
-  ============================================================ */
-  const hamburger = document.querySelector('.nav-hamburger');
-  const mobileMenu = document.getElementById('mobile-menu');
-
-  hamburger.addEventListener('click', () => {
-    const isOpen = mobileMenu.classList.toggle('is-open');
-    hamburger.setAttribute('aria-expanded', isOpen);
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-  });
-
-  // Close mobile menu when any link inside it is clicked (including sub-links)
-  mobileMenu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      mobileMenu.classList.remove('is-open');
-      hamburger.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    });
-  });
-
-  // Also close when clicking outside
-  mobileMenu.addEventListener('click', (e) => {
-    if (e.target === mobileMenu) {
-      mobileMenu.classList.remove('is-open');
-      hamburger.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    }
-  });
-
-  /* ============================================================
-     CURSOR
-  ============================================================ */
-  function initCursor() {
-    if (isTouch || prefersReduced) return;
-
-    const dot = document.getElementById('cursor-dot');
-    const ring = document.getElementById('cursor-ring');
-    let mx = 0, my = 0, rx = 0, ry = 0;
-    const RING_EASE = 0.12;
-
-    document.addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY;
-      dot.style.left = mx + 'px';
-      dot.style.top = my + 'px';
-    });
-
-    document.querySelectorAll('a, button, .tag').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        dot.classList.add('expanded');
-        ring.classList.add('expanded');
-      });
-      el.addEventListener('mouseleave', () => {
-        dot.classList.remove('expanded');
-        ring.classList.remove('expanded');
-      });
-    });
-
-    function ringLoop() {
-      rx = lerp(rx, mx, RING_EASE);
-      ry = lerp(ry, my, RING_EASE);
-      ring.style.left = rx + 'px';
-      ring.style.top = ry + 'px';
-      requestAnimationFrame(ringLoop);
-    }
-    ringLoop();
-  }
-
-  /* ============================================================
-     ELENA TOOLTIP
-  ============================================================ */
-  const elenaToggle = document.getElementById('elena-toggle');
-  const elenaTooltip = document.getElementById('elena-tooltip');
-
-  setTimeout(() => elenaTooltip.classList.add('show'), 2200);
-  setTimeout(() => elenaTooltip.classList.remove('show'), 5500);
-
-  elenaToggle.addEventListener('mouseenter', () => elenaTooltip.classList.add('show'));
-  elenaToggle.addEventListener('mouseleave', () => elenaTooltip.classList.remove('show'));
-  elenaToggle.addEventListener('click', () => {
-    elenaTooltip.textContent = '¡Próximamente disponible!';
-    elenaTooltip.classList.add('show');
-    setTimeout(() => {
-      elenaTooltip.classList.remove('show');
-      elenaTooltip.textContent = 'Hola, soy Elena';
-    }, 2500);
-  });
-
-  /* ============================================================
-     BOOT SEQUENCE
-  ============================================================ */
-  function boot() {
-    if (isMobile() || prefersReduced) {
-      initMobileScroll();
-      initMobileFadeIns();
-      // Still run the main loop for timeline and basic scroll tracking
-      requestAnimationFrame(mainLoop);
-    } else {
-      initSmoothScroll();
-      initSVGThread();
-      requestAnimationFrame(mainLoop);
-    }
-
-    initCursor();
-    initHeroEntry();
-
-    // Add .in-view class to sticky elements when they enter viewport
-    // This triggers CSS animations for text reveal (not scroll-driven)
-    const stickyEls = document.querySelectorAll('.scene-sticky');
-    const stickyObserver = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('in-view');
-        }
-      });
-    }, { threshold: 0.1 });
-    stickyEls.forEach(el => stickyObserver.observe(el));
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', boot);
-  } else {
-    boot();
-  }
-
-  // Resize: re-measure body height + SVG thread
-  let resizeTimer;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-      if (!isMobile() && !prefersReduced) {
-        document.body.style.height = smoothContent.scrollHeight + 'px';
-        sizeSVGThread();
       }
-    }, 150);
-  });
+
+      // Cargar cada recurso
+      resources.forEach(function (src) {
+        var img = new Image();
+        img.onload = updateProgress;
+        img.onerror = updateProgress; // contar errores también para no bloquear
+        img.src = src;
+      });
+    });
   </script>
+
 </body>
+
 </html>
